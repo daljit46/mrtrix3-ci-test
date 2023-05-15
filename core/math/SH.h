@@ -568,7 +568,7 @@ namespace MR
       template <class VectorType>
         inline void derivatives (
             const VectorType& sh,
-            const int lmax,
+            const unsigned int lmax,
             const typename VectorType::Scalar elevation,
             const typename VectorType::Scalar azimuth,
             typename VectorType::Scalar& amplitude,
@@ -594,25 +594,25 @@ namespace MR
           }
           else {
             Eigen::Matrix<value_type,Eigen::Dynamic,1,0,64> buf (lmax+1);
-            for (int m = 0; m <= lmax; m++) {
+            for (unsigned int m = 0; m <= lmax; m++) {
               Legendre::Plm_sph (buf, lmax, m, cel);
-              for (int l = ( (m&1) ?m+1:m); l <= lmax; l+=2)
+              for (unsigned int l = ( (m&1) ?m+1:m); l <= lmax; l+=2)
                 AL[index_mpos (l,m)] = buf[l];
             }
           }
 
           amplitude = sh[index (0, 0)] * AL[index_mpos (0, 0)];
-          for (int l = 2; l <= (int) lmax; l+=2) {
+          for (unsigned int l = 2; l <= lmax; l+=2) {
             const value_type& v (sh[index (l,0)]);
             amplitude += v * AL[index_mpos (l,0)];
             dSH_del += v * sqrt (value_type (l* (l+1))) * AL[index_mpos (l,1)];
             d2SH_del2 += v * (sqrt (value_type (l* (l+1) * (l-1) * (l+2))) * AL[index_mpos (l,2)] - l* (l+1) * AL[index_mpos (l,0)]) /2.0;
           }
 
-          for (int m = 1; m <= lmax; m++) {
+          for (unsigned int m = 1; m <= lmax; m++) {
             value_type caz = Math::sqrt2 * std::cos (m*azimuth);
             value_type saz = Math::sqrt2 * std::sin (m*azimuth);
-            for (int l = ( (m&1) ? m+1 : m); l <= lmax; l+=2) {
+            for (unsigned int l = ( (m&1) ? m+1 : m); l <= lmax; l+=2) {
               const value_type& vp (sh[index (l,m)]);
               const value_type& vm (sh[index (l,-m)]);
               amplitude += (vp*caz + vm*saz) * AL[index_mpos (l,m)];
