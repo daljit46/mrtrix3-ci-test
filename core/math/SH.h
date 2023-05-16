@@ -20,11 +20,8 @@
 #include "math/legendre.h"
 #include "math/least_squares.h"
 
-#include <stdint.h>
-
 #define MAX_DIR_CHANGE 0.2
 #define ANGLE_TOLERANCE 1e-4
-
 
 namespace MR
 {
@@ -32,7 +29,6 @@ namespace MR
   {
     namespace SH
     {
-      using lmax_t = uint32_t;
 
       /** \defgroup spherical_harmonics Spherical Harmonics
        * \brief Classes & functions to manage spherical harmonics. */
@@ -47,7 +43,7 @@ namespace MR
       extern const char* encoding_description;
 
       //! the number of (even-degree) coefficients for the given value of \a lmax
-      inline size_t NforL (lmax_t lmax)
+      inline size_t NforL (int lmax)
       {
         return (lmax+1) * (lmax+2) /2;
       }
@@ -59,7 +55,7 @@ namespace MR
       }
 
       //! same as NforL(), but consider only non-negative orders \e m
-      inline size_t NforL_mpos (lmax_t lmax)
+      inline size_t NforL_mpos (int lmax)
       {
         return (lmax/2+1) * (lmax/2+1);
       }
@@ -83,7 +79,7 @@ namespace MR
        * coefficients up to maximum harmonic degree \a lmax onto directions \a
        * dirs (in spherical coordinates, with columns [ azimuth elevation ]). */
       template <class MatrixType>
-        Eigen::Matrix<typename MatrixType::Scalar,Eigen::Dynamic, Eigen::Dynamic> init_transform (const MatrixType& dirs, const lmax_t lmax)
+        Eigen::Matrix<typename MatrixType::Scalar,Eigen::Dynamic, Eigen::Dynamic> init_transform (const MatrixType& dirs, const int lmax)
         {
           using namespace Eigen;
           using value_type = typename MatrixType::Scalar;
@@ -94,11 +90,11 @@ namespace MR
           for (ssize_t i = 0; i < dirs.rows(); i++) {
             const value_type z = std::cos (dirs (i,1));
             Legendre::Plm_sph (AL, lmax, 0, z);
-            for (lmax_t l = 0; l <= lmax; l+=2)
+            for (int l = 0; l <= lmax; l+=2)
               SHT (i,index (l,0)) = AL[l];
-            for (lmax_t m = 1; m <= lmax; m++) {
+            for (int m = 1; m <= lmax; m++) {
               Legendre::Plm_sph (AL, lmax, m, z);
-              for (lmax_t l = ( (m&1) ? m+1 : m); l <= lmax; l+=2) {
+              for (int l = ( (m&1) ? m+1 : m); l <= lmax; l+=2) {
                 SHT(i, index(l, m)) = Math::sqrt2 * AL[l]*std::cos (m*dirs (i,0));
                 SHT(i, index(l,-m)) = Math::sqrt2 * AL[l]*std::sin (m*dirs (i,0));
               }
@@ -112,7 +108,7 @@ namespace MR
        * coefficients up to maximum harmonic degree \a lmax onto directions \a
        * dirs (in cartesian coordinates, with columns [ x y z ] ans normalised). */
       template <class MatrixType>
-        Eigen::Matrix<typename MatrixType::Scalar,Eigen::Dynamic, Eigen::Dynamic> init_transform_cart (const MatrixType& dirs, const lmax_t lmax)
+        Eigen::Matrix<typename MatrixType::Scalar,Eigen::Dynamic, Eigen::Dynamic> init_transform_cart (const MatrixType& dirs, const int lmax)
         {
           using namespace Eigen;
           using value_type = typename MatrixType::Scalar;
@@ -126,14 +122,14 @@ namespace MR
             value_type cp = (rxy) ? dirs(i,0)/rxy : 1.0;
             value_type sp = (rxy) ? dirs(i,1)/rxy : 0.0;
             Legendre::Plm_sph (AL, lmax, 0, z);
-            for (lmax_t l = 0; l <= lmax; l+=2)
+            for (int l = 0; l <= lmax; l+=2)
               SHT (i,index (l,0)) = AL[l];
             value_type c0 (1.0), s0 (0.0);
-            for (lmax_t m = 1; m <= lmax; m++) {
+            for (int m = 1; m <= lmax; m++) {
               Legendre::Plm_sph (AL, lmax, m, z);
               value_type c = c0 * cp - s0 * sp;
               value_type s = s0 * cp + c0 * sp;
-              for (lmax_t l = ( (m&1) ? m+1 : m); l <= lmax; l+=2) {
+              for (int l = ( (m&1) ? m+1 : m); l <= lmax; l+=2) {
                 SHT(i, index(l, m)) = Math::sqrt2 * AL[l] * c;
                 SHT(i, index(l,-m)) = Math::sqrt2 * AL[l] * s;
               }
@@ -195,7 +191,7 @@ namespace MR
           using matrix_type = Eigen::Matrix<ValueType,Eigen::Dynamic,Eigen::Dynamic>;
 
           template <class MatrixType>
-            Transform (const MatrixType& dirs, lmax_t lmax) :
+            Transform (const MatrixType& dirs, int lmax) :
               SHT (init_transform (dirs, lmax)),
               iSHT (pinv (SHT)) { }
 
@@ -238,20 +234,20 @@ namespace MR
             typename VectorType::Scalar cos_elevation,
             typename VectorType::Scalar cos_azimuth,
             typename VectorType::Scalar sin_azimuth,
-            lmax_t lmax)
+            int lmax)
         {
           using value_type = typename VectorType::Scalar;
           value_type amplitude = 0.0;
           Eigen::Matrix<value_type,Eigen::Dynamic,1,0,64> AL (lmax+1);
           Legendre::Plm_sph (AL, lmax, 0, cos_elevation);
-          for (lmax_t l = 0; l <= lmax; l+=2)
+          for (int l = 0; l <= lmax; l+=2)
             amplitude += AL[l] * coefs[index (l,0)];
           value_type c0 (1.0), s0 (0.0);
-          for (lmax_t m = 1; m <= lmax; m++) {
+          for (int m = 1; m <= lmax; m++) {
             Legendre::Plm_sph (AL, lmax, m, cos_elevation);
             value_type c = c0 * cos_azimuth - s0 * sin_azimuth;  // std::cos(m*azimuth)
             value_type s = s0 * cos_azimuth + c0 * sin_azimuth;  // std::sin(m*azimuth)
-            for (lmax_t l = ( (m&1) ? m+1 : m); l <= lmax; l+=2)
+            for (int l = ( (m&1) ? m+1 : m); l <= lmax; l+=2)
               amplitude += AL[l] * Math::sqrt2 * (c * coefs[index (l,m)] + s * coefs[index (l,-m)]);
             c0 = c;
             s0 = s;
@@ -263,13 +259,13 @@ namespace MR
         inline typename VectorType::Scalar value (const VectorType& coefs,
             typename VectorType::Scalar cos_elevation,
             typename VectorType::Scalar azimuth,
-            lmax_t lmax)
+            int lmax)
         {
           return value (coefs, cos_elevation, std::cos(azimuth), std::sin(azimuth), lmax);
         }
 
       template <class VectorType1, class VectorType2>
-        inline typename VectorType1::Scalar value (const VectorType1& coefs, const VectorType2& unit_dir, lmax_t lmax)
+        inline typename VectorType1::Scalar value (const VectorType1& coefs, const VectorType2& unit_dir, int lmax)
         {
           using value_type = typename VectorType1::Scalar;
           value_type rxy = std::sqrt ( pow2(unit_dir[1]) + pow2(unit_dir[0]) );
@@ -280,7 +276,7 @@ namespace MR
 
 
       template <class VectorType1, class VectorType2>
-        inline VectorType1& delta (VectorType1& delta_vec, const VectorType2& unit_dir, lmax_t lmax)
+        inline VectorType1& delta (VectorType1& delta_vec, const VectorType2& unit_dir, int lmax)
         {
           using value_type = typename VectorType1::Scalar;
           delta_vec.resize (NforL (lmax));
@@ -289,14 +285,14 @@ namespace MR
           value_type sp = (rxy) ? unit_dir[1]/rxy : 0.0;
           Eigen::Matrix<value_type,Eigen::Dynamic,1,0,64> AL (lmax+1);
           Legendre::Plm_sph (AL, lmax, 0, unit_dir[2]);
-          for (lmax_t l = 0; l <= lmax; l+=2)
+          for (int l = 0; l <= lmax; l+=2)
             delta_vec[index (l,0)] = AL[l];
           value_type c0 (1.0), s0 (0.0);
-          for (lmax_t m = 1; m <= lmax; m++) {
+          for (int m = 1; m <= lmax; m++) {
             Legendre::Plm_sph (AL, lmax, m, unit_dir[2]);
             value_type c = c0 * cp - s0 * sp;
             value_type s = s0 * cp + c0 * sp;
-            for (lmax_t l = ( (m&1) ? m+1 : m); l <= lmax; l+=2) {
+            for (int l = ( (m&1) ? m+1 : m); l <= lmax; l+=2) {
               delta_vec[index (l,m)]  = AL[l] * Math::sqrt2 * c;
               delta_vec[index (l,-m)] = AL[l] * Math::sqrt2 * s;
             }
@@ -313,7 +309,7 @@ namespace MR
         {
           using value_type = typename VectorType2::Scalar;
           RH.resize (sh.size());
-          lmax_t lmax = 2*sh.size() +1;
+          int lmax = 2*sh.size() +1;
           Eigen::Matrix<value_type,Eigen::Dynamic,1,0,64> AL (lmax+1);
           Legendre::Plm_sph (AL, lmax, 0, 1.0);
           for (ssize_t l = 0; l < sh.size(); l++)
@@ -425,12 +421,12 @@ namespace MR
             AL.resize (ndir*nAL);
             Eigen::Matrix<value_type,Eigen::Dynamic,1,0,64> buf (lmax+1);
 
-            for (lmax_t n = 0; n < ndir; n++) {
+            for (int n = 0; n < ndir; n++) {
               typename vector<value_type>::iterator p = AL.begin() + n*nAL;
               value_type cos_el = std::cos (n*inc);
-              for (lmax_t m = 0; m <= lmax; m++) {
+              for (int m = 0; m <= lmax; m++) {
                 Legendre::Plm_sph (buf, lmax, m, cos_el);
-                for (lmax_t l = ( (m&1) ?m+1:m); l <= lmax; l+=2)
+                for (int l = ( (m&1) ?m+1:m); l <= lmax; l+=2)
                   p[index_mpos (l,m)] = buf[l];
               }
             }
@@ -444,7 +440,7 @@ namespace MR
               f.f1 = 1.0;
               f.f2 = 0.0;
             }
-            else if (i >= static_cast<int>(ndir)-1) {
+            else if (i >= ndir-1) {
               i = ndir-1;
               f.f1 = 1.0;
               f.f2 = 0.0;
@@ -468,8 +464,8 @@ namespace MR
           }
 
           void get (ValueType* dest, const PrecomputedFraction<ValueType>& f) const {
-            for (lmax_t l = 0; l <= lmax; l+=2) {
-              for (lmax_t m = 0; m <= l; m++) {
+            for (int l = 0; l <= lmax; l+=2) {
+              for (int m = 0; m <= l; m++) {
                 int i = index_mpos (l,m);
                 dest[i] = get (f,i);
               }
@@ -484,13 +480,13 @@ namespace MR
               ValueType cp = (rxy) ? unit_dir[0]/rxy : 1.0;
               ValueType sp = (rxy) ? unit_dir[1]/rxy : 0.0;
               ValueType v = 0.0;
-              for (lmax_t l = 0; l <= lmax; l+=2)
+              for (int l = 0; l <= lmax; l+=2)
                 v += get (f,l,0) * val[index (l,0)];
               ValueType c0 (1.0), s0 (0.0);
-              for (lmax_t m = 1; m <= lmax; m++) {
+              for (int m = 1; m <= lmax; m++) {
                 ValueType c = c0 * cp - s0 * sp;
                 ValueType s = s0 * cp + c0 * sp;
-                for (lmax_t l = ( (m&1) ? m+1 : m); l <= lmax; l+=2)
+                for (int l = ( (m&1) ? m+1 : m); l <= lmax; l+=2)
                   v += get (f,l,m) * Math::sqrt2 * (c * val[index (l,m)] + s * val[index (l,-m)]);
                 c0 = c;
                 s0 = s;
@@ -499,7 +495,7 @@ namespace MR
             }
 
         protected:
-          lmax_t lmax, ndir, nAL;
+          int lmax, ndir, nAL;
           ValueType inc;
           vector<ValueType> AL;
       };
@@ -518,7 +514,7 @@ namespace MR
       template <class VectorType, class UnitVectorType, class ValueType = float>
         inline typename VectorType::Scalar get_peak (
             const VectorType& sh,
-            lmax_t lmax,
+            int lmax,
             UnitVectorType& unit_init_dir,
             PrecomputedAL<typename VectorType::Scalar>* precomputer = nullptr)
         {
@@ -572,7 +568,7 @@ namespace MR
       template <class VectorType>
         inline void derivatives (
             const VectorType& sh,
-            const lmax_t lmax,
+            const unsigned int lmax,
             const typename VectorType::Scalar elevation,
             const typename VectorType::Scalar azimuth,
             typename VectorType::Scalar& amplitude,
@@ -598,25 +594,25 @@ namespace MR
           }
           else {
             Eigen::Matrix<value_type,Eigen::Dynamic,1,0,64> buf (lmax+1);
-            for (lmax_t m = 0; m <= lmax; m++) {
+            for (unsigned int m = 0; m <= lmax; m++) {
               Legendre::Plm_sph (buf, lmax, m, cel);
-              for (lmax_t l = ( (m&1) ?m+1:m); l <= lmax; l+=2)
+              for (unsigned int l = ( (m&1) ?m+1:m); l <= lmax; l+=2)
                 AL[index_mpos (l,m)] = buf[l];
             }
           }
 
           amplitude = sh[index (0, 0)] * AL[index_mpos (0, 0)];
-          for (lmax_t l = 2; l <= lmax; l+=2) {
+          for (unsigned int l = 2; l <= lmax; l+=2) {
             const value_type& v (sh[index (l,0)]);
             amplitude += v * AL[index_mpos (l,0)];
             dSH_del += v * sqrt (value_type (l* (l+1))) * AL[index_mpos (l,1)];
             d2SH_del2 += v * (sqrt (value_type (l* (l+1) * (l-1) * (l+2))) * AL[index_mpos (l,2)] - l* (l+1) * AL[index_mpos (l,0)]) /2.0;
           }
 
-          for (lmax_t m = 1; m <= lmax; m++) {
+          for (unsigned int m = 1; m <= lmax; m++) {
             value_type caz = Math::sqrt2 * std::cos (m*azimuth);
             value_type saz = Math::sqrt2 * std::sin (m*azimuth);
-            for (lmax_t l = ( (m&1) ? m+1 : m); l <= lmax; l+=2) {
+            for (unsigned int l = ( (m&1) ? m+1 : m); l <= lmax; l+=2) {
               const value_type& vp (sh[index (l,m)]);
               const value_type& vm (sh[index (l,-m)]);
               amplitude += (vp*caz + vm*saz) * AL[index_mpos (l,m)];
@@ -656,7 +652,7 @@ namespace MR
       template <typename ValueType> class aPSF
       {
         public:
-          aPSF (const lmax_t lmax) :
+          aPSF (const size_t lmax) :
             lmax (lmax),
             RH (lmax/2 + 1)
         {
@@ -738,7 +734,7 @@ namespace MR
           inline const Eigen::Matrix<ValueType,Eigen::Dynamic,1>& RH_coefs() const { return RH; }
 
         private:
-          const lmax_t lmax;
+          const size_t lmax;
           Eigen::Matrix<ValueType,Eigen::Dynamic,1> RH;
 
       };
