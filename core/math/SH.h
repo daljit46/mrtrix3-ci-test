@@ -584,6 +584,8 @@ namespace MR
           value_type cel = std::cos (elevation);
           bool atpole = sel < 1e-4;
 
+          assert(lmax >= 0);
+          
           dSH_del = dSH_daz = d2SH_del2 = d2SH_deldaz = d2SH_daz2 = 0.0;
           VLA_MAX (AL, value_type, NforL_mpos (lmax), 64);
 
