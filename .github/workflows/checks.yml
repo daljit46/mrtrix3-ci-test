@@ -134,7 +134,7 @@ jobs:
 
     env:
       CFLAGS: -Werror
-      MINGW_PACKAGE_PREFIX: mingw-w64-x86_64
+      MINGW_PACKAGE_PREFIX: mingw-w64-ucrt-x86_64
       SCCACHE_GHA_ENABLED: "true"
       SCCACHE_CACHE_SIZE: "2G"
       SCCACHE_DIR: ${{ github.workspace }}/.sccache
@@ -144,8 +144,8 @@ jobs:
       
       - uses: msys2/setup-msys2@v2
         with:
-          msystem: MINGW64
-          release: false
+          msystem: UCRT64
+          update: true
           install: |
             git
             python
