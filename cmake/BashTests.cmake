@@ -15,6 +15,11 @@ function(add_bash_tests)
     set(working_directory ${ARG_WORKING_DIRECTORY})
     set(exec_directories ${ARG_EXEC_DIRECTORIES})
 
+    # In a MINGW environment, the paths used in a bash command must be prefixed with /c
+    if(MINGW)
+        string(REPLACE REGEX "C:" "/c" exec_directories "${exec_directories}")
+    endif()
+
     get_filename_component(file_name ${file_path} NAME_WE)
 
     # Add a custom target for IDEs to pickup the test script
@@ -23,8 +28,8 @@ function(add_bash_tests)
     # Add test that cleans up temporary files
     add_test(
         NAME ${prefix}_${file_name}_cleanup
-        COMMAND ${BASH} -c "rm -rf ${DATA_DIR}/tmp* ${DATA_DIR}/*-tmp-*"
-        WORKING_DIRECTORY ${DATA_DIR}
+        COMMAND ${BASH} -c "rm -rf ${working_directory}/tmp* ${working_directory}/*-tmp-*"
+        WORKING_DIRECTORY ${working_directory}
     )
     set_tests_properties(${prefix}_${file_name}_cleanup PROPERTIES FIXTURES_SETUP ${file_name}_cleanup)
 
