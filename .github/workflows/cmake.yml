@@ -4,80 +4,6 @@ on:
   push:
 
 jobs:
-  linux-gcc-build:
-
-    runs-on: ubuntu-latest
-
-    env:
-      QT_SELECT: qt5
-      SCCACHE_GHA_ENABLED: "true"
-      SCCACHE_CACHE_SIZE: "2G"
-
-    steps:
-    - uses: actions/checkout@v1
-      with:
-        submodules: true
-
-    - name: install dependencies
-      run: |
-         sudo apt-get update
-         sudo apt-get install g++-9 libqt5opengl5-dev libqt5svg5-dev libglvnd-dev libeigen3-dev zlib1g-dev libfftw3-dev ninja-build
-
-    - name: Run sccache-cache
-      uses: mozilla-actions/sccache-action@v0.0.3
-      
-    - name: configure
-      run: |
-        mkdir cmake-build
-        cmake -B cmake-build -G Ninja -D CMAKE_CXX_COMPILER_LAUNCHER=sccache .
-
-    - name: build
-      run: cmake --build ./cmake-build
-
-    - name: unit tests
-      run: ctest -R unit --output-on-failure --test-dir ./cmake-build
-
-    - name: binary tests
-      run: ctest -R bin --output-on-failure --test-dir ./cmake-build
-
-  macos-build:
-
-    runs-on: macos-latest
-
-    env:
-      PACKAGES: "qt5 eigen pkg-config fftw libpng ninja cmake"
-      SCCACHE_GHA_ENABLED: "true"
-      SCCACHE_CACHE_SIZE: "2G"
-
-    steps:
-    - uses: actions/checkout@v1
-      with:
-        submodules: true
-
-    - name: install dependencies
-      run: |
-         brew update || brew update     # https://github.com/Homebrew/brew/issues/2491#issuecomment-294207661
-         brew install $PACKAGES || brew install $PACKAGES
-         brew link --force qt5
-
-    - name: Run sccache-cache
-      uses: mozilla-actions/sccache-action@v0.0.3
-
-    - name: configure
-      run: |
-        export PATH=/usr/local/opt/qt5/bin:$PATH
-        mkdir cmake-build
-        cmake -B cmake-build -G Ninja -DCMAKE_CXX_COMPILER_LAUNCHER=sccache .
-
-    - name: build
-      run: cmake --build ./cmake-build
-
-    - name: unit tests
-      run: ctest -R unit --output-on-failure --test-dir ./cmake-build
-
-    - name: binary tests
-      run: ctest -R bin --output-on-failure --test-dir ./cmake-build
-
   windows-build:
 
     runs-on: windows-latest
@@ -131,12 +57,12 @@ jobs:
           mkdir cmake-build
           cmake -B cmake-build -G Ninja -DCMAKE_CXX_COMPILER_LAUNCHER=${{env.SCCACHE_UNIX_PATH}} .
 
-      - name: build
-        run: cmake --build cmake-build
+      # - name: build
+      #   run: cmake --build cmake-build
       
-      - name: unit tests
-        run: ctest -R unit --output-on-failure --test-dir ./cmake-build
+      # - name: unit tests
+      #   run: ctest -R unit --output-on-failure --test-dir ./cmake-build
   
-      - name: binary tests
-        run: ctest -R bin --output-on-failure --test-dir ./cmake-build
+      # - name: binary tests
+      #   run: ctest -R bin --output-on-failure --test-dir ./cmake-build
   

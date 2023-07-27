@@ -40,6 +40,7 @@ function(add_bash_tests)
 
     set(EXEC_DIR_PATHS "${exec_directories}")
     string(REPLACE ";" ":" EXEC_DIR_PATHS "${EXEC_DIR_PATHS}")
+    message(STATUS "Add bash tests for ${file_name} with exec directories: ${EXEC_DIR_PATHS}")
 
     foreach(line_num RANGE ${MAX_LINE_NUM})
         list(GET FILE_CONTENTS ${line_num} line)
