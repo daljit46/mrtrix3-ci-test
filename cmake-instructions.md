@@ -51,13 +51,13 @@ For example, on Ubuntu you can add the following line to your `~/.bashrc`:
 
 You can enable/disable the following options (passing `-D MYOPTION=ON/OFF` to CMake at the configure stage).
 
-- `USE_QT6` to enable building the project using Qt 6.
+- `MRTRIX_USE_QT6` to enable building the project using Qt 6.
 
-- `BUILD_GUI` to choose whether you'd like to build the gui commands (e.g. `mrview`).
+- `MRTRIX_BUILD_GUI` to choose whether you'd like to build the gui commands (e.g. `mrview`).
 
-- `WARNING_AS_ERRORS` for compilation to fail when a compiler warning is generated.
+- `MRTRIX_WARNINGS_AS_ERRORS` for compilation to fail when a compiler warning is generated.
 
-- `BUILD_TESTS` to build tests.
+- `MRTRIX_BUILD_TESTS` to build tests.
 
 
 ## Testing

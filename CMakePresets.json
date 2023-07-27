@@ -34,8 +34,8 @@
             "cacheVariables" : {
                 "CMAKE_BUILD_TYPE" : "Release",
                 "CMAKE_CXX_COMPILER_LAUNCHER" : "sccache",
-                "ENABLE_STL_DEBUGGING" : "ON",
-                "WARNING_AS_ERRORS" : "ON"
+                "MRTRIX_STL_DEBUGGING" : "ON",
+                "MRTRIX_WARNINGS_AS_ERRORS" : "ON"
             }
         }
     ]
