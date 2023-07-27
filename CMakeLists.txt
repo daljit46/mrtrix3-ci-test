@@ -1,9 +1,11 @@
 cmake_minimum_required(VERSION 3.21 FATAL_ERROR)
 
-project(mrtrix3)
+project(mrtrix3 VERSION 3.0.4)
 include(GNUInstallDirs)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
+set(MRTRIX_BASE_VERSION "${CMAKE_PROJECT_VERSION}")
 
 option(BUILD_GUI "Build the MRtrix3 GUI" ON)
 option(USE_QT6 "Use Qt6 to build" OFF)
@@ -20,8 +22,6 @@ if(USE_QT6)
 else()
     set(QT_MAJOR_VERSION 5)
 endif()
-
-set(MRTRIX_BASE_VERSION "3.0.4")
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
