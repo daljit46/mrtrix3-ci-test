@@ -20,7 +20,7 @@ For example, on Ubuntu you can add the following line to your `~/.bashrc`:
         $ export PATH=~/.local/bin:$PATH
 
 ## Build instructions
-1. Clone the repo: `git clone https://github.com/mrtrix3/mrtrix3 -b cmake_experimental_shared`
+1. Clone the repo: `git clone https://github.com/mrtrix3/mrtrix3 -b cmake`
 2. Create a build directory and configure cmake:
 
         $ mkdir build
@@ -43,7 +43,7 @@ For example, on Ubuntu you can add the following line to your `~/.bashrc`:
 
         $ cmake --build build
 
-    CMake will build all commands inside your build directory (the executables will be inside `cmd`).
+    CMake will build all commands inside your build directory (the executables will be inside `bin`).
     If you'd like to build just a single command, you can do so by specifying `--target name_of_command`.
 
 
