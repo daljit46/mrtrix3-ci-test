@@ -26,18 +26,16 @@ jobs:
       uses: mozilla-actions/sccache-action@v0.0.3
       
     - name: configure
-      run: |
-        mkdir cmake-build
-        cmake -B cmake-build -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_CXX_COMPILER_LAUNCHER=sccache .
+      run: cmake --preset ci-release-checks -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ .
 
     - name: build
-      run: cmake --build ./cmake-build
+      run: cmake --build ../mrtrix3-build-ci-release-checks
 
     - name: unit tests
-      run: ctest -R unit --output-on-failure --test-dir ./cmake-build
+      run: ctest -R unit --output-on-failure --test-dir ../mrtrix3-build-ci-release-checks
 
     - name: binary tests
-      run: ctest -R bin --output-on-failure --test-dir ./cmake-build
+      run: ctest -R bin --output-on-failure --test-dir ../mrtrix3-build-ci-release-checks
 
   linux-gcc-build:
 
@@ -62,18 +60,16 @@ jobs:
       uses: mozilla-actions/sccache-action@v0.0.3
       
     - name: configure
-      run: |
-        mkdir cmake-build
-        cmake -B cmake-build -G Ninja -D CMAKE_CXX_COMPILER_LAUNCHER=sccache .
+      run: cmake --preset ci-release-checks
 
     - name: build
-      run: cmake --build ./cmake-build
+      run: cmake --build ../mrtrix3-build-ci-release-checks
 
     - name: unit tests
-      run: ctest -R unit --output-on-failure --test-dir ./cmake-build
+      run: ctest -R unit --output-on-failure --test-dir ../mrtrix3-build-ci-release-checks
 
     - name: binary tests
-      run: ctest -R bin --output-on-failure --test-dir ./cmake-build
+      run: ctest -R bin --output-on-failure --test-dir ../mrtrix3-build-ci-release-checks
 
   macos-build:
 
@@ -101,17 +97,16 @@ jobs:
     - name: configure
       run: |
         export PATH=/usr/local/opt/qt5/bin:$PATH
-        mkdir cmake-build
-        cmake -B cmake-build -G Ninja -DCMAKE_CXX_COMPILER_LAUNCHER=sccache .
+        cmake --preset ci-release-checks
 
     - name: build
-      run: cmake --build ./cmake-build
+      run: cmake --build ../mrtrix3-build-ci-release-checks
 
     - name: unit tests
-      run: ctest -R unit --output-on-failure --test-dir ./cmake-build
+      run: ctest -R unit --output-on-failure --test-dir ../mrtrix3-build-ci-release-checks
 
     - name: binary tests
-      run: ctest -R bin --output-on-failure --test-dir ./cmake-build
+      run: ctest -R bin --output-on-failure --test-dir ../mrtrix3-build-ci-release-checks
 
   windows-build:
 
@@ -162,16 +157,14 @@ jobs:
           echo "SCCACHE_UNIX_PATH=$SCCACHE_UNIX_PATH" >> $GITHUB_ENV
           
       - name: configure
-        run: |
-          mkdir cmake-build
-          cmake -B cmake-build -G Ninja -DCMAKE_CXX_COMPILER_LAUNCHER=${{env.SCCACHE_UNIX_PATH}} .
+        run: cmake --preset ci-release-checks -DCMAKE_CXX_COMPILER_LAUNCHER=${{env.SCCACHE_UNIX_PATH}} .
 
       - name: build
-        run: cmake --build cmake-build
+        run: cmake --build ../mrtrix3-build-ci-release-checks
       
       - name: unit tests
-        run: ctest -R unit --output-on-failure --test-dir ./cmake-build
+        run: ctest -R unit --output-on-failure --test-dir ../mrtrix3-build-ci-release-checks
   
       - name: binary tests
-        run: ctest -R bin --output-on-failure --test-dir ./cmake-build
+        run: ctest -R bin --output-on-failure --test-dir ../mrtrix3-build-ci-release-checks
   
