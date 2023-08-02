@@ -6,10 +6,7 @@
             "displayName" : "Base configuration",
             "hidden" : true,
             "generator" : "Ninja",
-            "binaryDir": "${sourceParentDir}/mrtrix3-build-${presetName}",
-            "cacheVariables" : {
-                "CMAKE_CXX_COMPILER_LAUNCHER" : "ccache"
-            }
+            "binaryDir": "${sourceParentDir}/mrtrix3-build-${presetName}"
         },
         {
             "name": "debug",
@@ -33,7 +30,6 @@
             "inherits" : "base",
             "cacheVariables" : {
                 "CMAKE_BUILD_TYPE" : "Release",
-                "CMAKE_CXX_COMPILER_LAUNCHER" : "sccache",
                 "MRTRIX_STL_DEBUGGING" : "ON",
                 "MRTRIX_WARNINGS_AS_ERRORS" : "ON"
             }

@@ -27,13 +27,16 @@ For example, on Ubuntu you can add the following line to your `~/.bashrc`:
         $ cmake -B build mrtrix3
     
     If all the required dependencies are installed, `CMake` should correctly configure the project.
-    It's highly recommended that you use `Ninja` and `ccache` (or `sccache`) to configure the project,
-    to do this run `cmake -G Ninja -D CMAKE_CXX_COMPILER_LAUNCHER=ccache -B build mrtrix3` instead of
+    It's **highly** recommended that you use `Ninja` and `ccache` (or `sccache`) to configure the project,
+    to do this run `cmake -G Ninja -B build mrtrix3` instead of
     second step above. This will provide you faster compilations speeds. You can install `Ninja` and 
     `ccache` using your system's package manager (e.g. `brew install ninja ccache` or `apt install ninja ccache`).
-
+    The project will automatically detect if `ccache` (or `sccache`) is installed on your system. You can also specify your own custom compiler caching tool by setting the `CACHE_OPTION` variable
+    (by specifying `-DCACHE_OPTION=custom_cache_tool`).
+    
     If you wish, we provide some default CMake presets that automatically configure the project using predefined
-    settings. You can view the list of available presets in [CMakePresets.json](https://github.com/MRtrix3/mrtrix3/blob/cmake_experimental_shared/CMakePresets.json). To configure the project using a given preset run
+    settings. You can view the list of available presets in [CMakePresets.json](https://github.com/MRtrix3/mrtrix3/blob/cmake_experimental_shared/CMakePresets.json)
+    or run `cmake --list-presets` in the source directory. To configure the project using a given preset run
     
         $ cmake --preset name_of_configure_preset
     
