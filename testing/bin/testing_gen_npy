@@ -1,7 +1,15 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 import os
+import platform
 import sys
+
+print("Python version: " + platform.python_version())
+print("Python implementation: " + platform.python_implementation())
+print("Python build: " + platform.python_build()[0])
+print("Python executable: " + sys.executable)
+
+
 import numpy as np
 
 dtypes = ['?', 'b', 'B']
