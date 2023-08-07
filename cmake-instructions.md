@@ -62,7 +62,7 @@ You can enable/disable the following options (passing `-D MYOPTION=ON/OFF` to CM
 
 ## Testing
 
-This is very much WIP. To run the tests, you need to build the project as described above and then, from the build directory, run `ctest --output-on-failure`.
+This is very much WIP. To run the tests, you need to build the project as described above and then, from the build directory, run `ctest`.
 
 Each test is prefixed by its category, so binary test names start with `bin_` and unit test names
 start with `unit_`.

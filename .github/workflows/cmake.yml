@@ -32,10 +32,10 @@ jobs:
       run: cmake --build ../mrtrix3-build-ci-release-checks
 
     - name: unit tests
-      run: ctest -R unit --output-on-failure --test-dir ../mrtrix3-build-ci-release-checks
+      run: ctest -R unit --test-dir ../mrtrix3-build-ci-release-checks
 
     - name: binary tests
-      run: ctest -R bin --output-on-failure --test-dir ../mrtrix3-build-ci-release-checks
+      run: ctest -R bin --test-dir ../mrtrix3-build-ci-release-checks
 
   linux-gcc-build:
 
@@ -66,10 +66,10 @@ jobs:
       run: cmake --build ../mrtrix3-build-ci-release-checks
 
     - name: unit tests
-      run: ctest -R unit --output-on-failure --test-dir ../mrtrix3-build-ci-release-checks
+      run: ctest -R unit --test-dir ../mrtrix3-build-ci-release-checks
 
     - name: binary tests
-      run: ctest -R bin --output-on-failure --test-dir ../mrtrix3-build-ci-release-checks
+      run: ctest -R bin --test-dir ../mrtrix3-build-ci-release-checks
 
   macos-build:
 
@@ -103,10 +103,10 @@ jobs:
       run: cmake --build ../mrtrix3-build-ci-release-checks
 
     - name: unit tests
-      run: ctest -R unit --output-on-failure --test-dir ../mrtrix3-build-ci-release-checks
+      run: ctest -R unit --test-dir ../mrtrix3-build-ci-release-checks
 
     - name: binary tests
-      run: ctest -R bin --output-on-failure --test-dir ../mrtrix3-build-ci-release-checks
+      run: ctest -R bin --test-dir ../mrtrix3-build-ci-release-checks
 
   windows-build:
 
@@ -163,8 +163,7 @@ jobs:
         run: cmake --build ../mrtrix3-build-ci-release-checks
       
       - name: unit tests
-        run: ctest -R unit --output-on-failure --test-dir ../mrtrix3-build-ci-release-checks
+        run: ctest -R unit --test-dir ../mrtrix3-build-ci-release-checks
   
       - name: binary tests
-        run: ctest -R bin --output-on-failure --test-dir ../mrtrix3-build-ci-release-checks
-  
+        run: ctest -R bin --test-dir ../mrtrix3-build-ci-release-checks
