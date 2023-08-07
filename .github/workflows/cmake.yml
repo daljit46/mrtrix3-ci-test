@@ -167,3 +167,31 @@ jobs:
   
       - name: binary tests
         run: ctest -R bin --test-dir ../mrtrix3-build-ci-release-checks
+
+  secondary-checks:
+    runs-on: ubuntu-latest
+
+    env:
+      QT_SELECT: qt5
+
+    steps:
+    - uses: actions/checkout@v1
+    
+    - name: install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install pylint python3-sphinx sphinx-rtd-theme-common python3-recommonmark python3-sphinx-rtd-theme python3-pip python3-sphinx-notfound-page
+
+    - name: check syntax
+      run: ./check_syntax || { cat syntax.log; false; }
+
+    - name: pylint
+      run: |
+         echo "__version__ = 'pylint testing' #pylint: disable=unused-variable" > ./python/lib/mrtrix3/_version.py
+         ./run_pylint || { cat pylint.log; false; }
+
+    - name: check copyright headers
+      run: ./update_copyright && git diff --exit-code
+
+    - name: check building of documentation
+      run: python3 -m sphinx -n -N -W -w sphinx.log docs/ tmp/
