@@ -2,6 +2,15 @@ set(PYTHON_VERSION_FILE ${PROJECT_BINARY_DIR}/lib/mrtrix3/_version.py)
 
 find_package(Git QUIET)
 
+file(GLOB_RECURSE PYTHON_FILES 
+    ${CMAKE_CURRENT_SOURCE_DIR}/bin/*
+    ${CMAKE_CURRENT_SOURCE_DIR}/lib/*
+)
+
+add_custom_target(Python SOURCES
+    ${PYTHON_FILES}
+)
+
 # We generate the version file at configure time,
 # so tools like Pylint can run without building the project
 execute_process(
