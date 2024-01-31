@@ -18,7 +18,7 @@ jobs:
       id: review
       with:
         apt_packages: g++,libqt5opengl5-dev,libqt5svg5-dev,libglvnd-dev,libeigen3-dev,zlib1g-dev,libfftw3-dev,ninja-build
-        cmake_command: cmake . -DCMAKE_EXPORT_COMPILE_COMMANDS=on
+        cmake_command: cmake . -DCMAKE_EXPORT_COMPILE_COMMANDS=on && cat .clang-tidy
         config_file: .clang-tidy
 
     - uses: ZedThree/clang-tidy-review/upload@v0.17.0
