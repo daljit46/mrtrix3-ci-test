@@ -1,12 +1,7 @@
 name: Checks
 
 on:
-  pull_request:
-    types: [opened, synchronize]
-    branches: [ master, dev]
-    merge_group:
-      types: [checks_requested]
-      branches: [master]
+  workflow_dispatch:
       
 jobs:
   linux-clang-build:
