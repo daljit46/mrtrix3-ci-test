@@ -80,46 +80,7 @@ template <typename value_type> void write(std::vector<Header> &in, const size_t 
 }
 
 void run() {
-  size_t num_images = argument.size() - 1;
-  std::vector<Header> headers;
-  ssize_t max_axis_nonunity = 0;
-  for (size_t i = 0; i != num_images; ++i) {
-    Header H = Header::open(argument[i]);
-    ssize_t a;
-    for (a = ssize_t(H.ndim()) - 1; a >= 0 && H.size(a) <= 1; a--)
-      ;
-    max_axis_nonunity = std::max(max_axis_nonunity, a);
-    headers.push_back(std::move(H));
-  }
-  const size_t axis = get_option_value("axis", std::max(size_t(3), size_t(std::max(ssize_t(0), max_axis_nonunity))));
-
-  Header header_out = concatenate(headers, axis, true);
-  header_out.name() = std::string(argument[num_images]);
-  header_out.datatype() = DataType::from_command_line(header_out.datatype());
-
-  if (header_out.intensity_offset() == 0.0 && header_out.intensity_scale() == 1.0 &&
-      !header_out.datatype().is_floating_point()) {
-    switch (header_out.datatype()() & DataType::Type) {
-    case DataType::Bit:
-    case DataType::UInt8:
-    case DataType::UInt16:
-    case DataType::UInt32:
-      if (header_out.datatype().is_signed())
-        write<int32_t>(headers, axis, header_out);
-      else
-        write<uint32_t>(headers, axis, header_out);
-      break;
-    case DataType::UInt64:
-      if (header_out.datatype().is_signed())
-        write<int64_t>(headers, axis, header_out);
-      else
-        write<uint64_t>(headers, axis, header_out);
-      break;
-    }
-  } else {
-    if (header_out.datatype().is_complex())
-      write<cdouble>(headers, axis, header_out);
-    else
-      write<double>(headers, axis, header_out);
+  for(int i = 0; i < 10; i++){
+    std::cout << i << std::endl;
   }
 }
