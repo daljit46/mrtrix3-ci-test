@@ -18,7 +18,7 @@ jobs:
         submodules: true
 
     - name: install dependencies
-      run: sudo apt install cmake
+      run: sudo apt install cmake autoconf-archive
 
     - name: Run sccache-cache
       uses: mozilla-actions/sccache-action@v0.0.3
