@@ -1,0 +1,56 @@
+name: Build
+
+on:
+  push:
+  workflow_dispatch:
+      
+jobs:
+  linux-clang-build:
+    runs-on: ubuntu-20.04
+
+    env:
+      SCCACHE_GHA_ENABLED: "true"
+      SCCACHE_CACHE_SIZE: "2G"
+
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        submodules: true
+
+    - name: install dependencies
+      run: sudo apt install cmake
+
+    - name: Run sccache-cache
+      uses: mozilla-actions/sccache-action@v0.0.3
+
+    - name: Clone vcpkg
+      run: git clone https://github.com/microsoft/vcpkg.git
+
+    - name: Setup vcpkg
+      uses: lukka/run-vcpkg@v11
+      with:
+        vcpkgDirectory: ${{ github.workspace }}/vcpkg
+        vcpkgGitCommitId: 53bef8994c541b6561884a8395ea35715ece75db
+
+    - name: Print CMake version
+      run: cmake --version
+
+    - name: configure
+      run: >
+        cmake
+        -B build
+        -G Ninja
+        -D CMAKE_BUILD_TYPE=Release
+        -D CMAKE_TOOLCHAIN_FILE=./vcpkg/scripts/buildsystems/vcpkg.cmake
+
+    - name: build
+      run: cmake --build build
+
+    - name: install
+      run: cmake --install build --prefix ./mrtrix3_install
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: mrtrix3
+        path: ${{ github.workspace }}/install

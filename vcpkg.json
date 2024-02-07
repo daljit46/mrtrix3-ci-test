@@ -1,0 +1,12 @@
+{
+    "name": "mrtrix3",
+    "version": "3.1.0",
+    "dependencies": [
+        "qtbase",
+        "qtsvg",
+        "eigen3",
+        "libpng",
+        "libtiff",
+        "zlib"
+    ]
+  }
