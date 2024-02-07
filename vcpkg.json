@@ -6,7 +6,7 @@
         "qtsvg",
         "eigen3",
         "libpng",
-        "libtiff",
+        "tiff",
         "zlib"
     ]
   }
