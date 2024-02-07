@@ -29,7 +29,8 @@ jobs:
         libxi-dev \
         libxkbcommon-dev \
         libxkbcommon-x11-dev \
-        libegl1-mesa-dev
+        libegl1-mesa-dev \
+        ninja-build
 
     - name: Run sccache-cache
       uses: mozilla-actions/sccache-action@v0.0.3
