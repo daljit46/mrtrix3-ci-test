@@ -32,6 +32,12 @@ jobs:
         libegl1-mesa-dev \
         ninja-build
 
+    - name: Install Clang 17
+      run: |
+        wget https://apt.llvm.org/llvm.sh
+        chmod +x llvm.sh
+        sudo ./llvm.sh 17
+
     - name: Run sccache-cache
       uses: mozilla-actions/sccache-action@v0.0.3
 
@@ -58,6 +64,8 @@ jobs:
         -B build
         -G Ninja
         -D CMAKE_BUILD_TYPE=Release
+        -D CMAKE_C_COMPILER=clang-17
+        -D CMAKE_CXX_COMPILER=clang++-17
         -D CMAKE_C_COMPILER_LAUNCHER=sccache
         -D CMAKE_CXX_COMPILER_LAUNCHER=sccache
         -D QT_BUILD_TESTS=OFF
@@ -79,6 +87,7 @@ jobs:
         cmake
         -B build
         -G Ninja
+        -D CMAKE_CXX_COMPILER=clang++-17
         -D CMAKE_BUILD_TYPE=Release
         -D CMAKE_TOOLCHAIN_FILE=./vcpkg/scripts/buildsystems/vcpkg.cmake
         -D CMAKE_PREFIX_PATH=~/.qtinstall
