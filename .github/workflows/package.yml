@@ -63,6 +63,7 @@ jobs:
         -D QT_BUILD_TESTS=OFF
         -D QT_BUILD_EXAMPLES=OFF
         -D QT_BUILD_SUBMODULES="qtbase;qtsvg"
+        -D BUILD_SHARED_LIBS=OFF
 
     - name: Build Qt
       run: cmake --build qt6/build --verbose
