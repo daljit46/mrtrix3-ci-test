@@ -91,6 +91,7 @@ jobs:
         -D CMAKE_BUILD_TYPE=Release
         -D CMAKE_TOOLCHAIN_FILE=./vcpkg/scripts/buildsystems/vcpkg.cmake
         -D CMAKE_PREFIX_PATH=~/.qtinstall
+        -D MRTRIX_USE_QT6=ON
 
     - name: build
       run: cmake --build build
