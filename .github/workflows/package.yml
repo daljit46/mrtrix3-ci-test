@@ -44,6 +44,32 @@ jobs:
         vcpkgDirectory: ${{ github.workspace }}/vcpkg
         vcpkgGitCommitId: 53bef8994c541b6561884a8395ea35715ece75db
 
+    - name: Setup Qt sources
+      run: |
+        git clone git://code.qt.io/qt/qt5.git qt6
+        cd qt6 && git checkout 6.6.1
+        ./init-repository --module-subset=qtbase,qtsvg
+        ./configure -list-features
+
+    - name: Configure Qt
+      run: >
+        cd qt6 &&
+        cmake
+        -B build
+        -G Ninja
+        -D CMAKE_BUILD_TYPE=Release
+        -D CMAKE_C_COMPILER_LAUNCHER=sccache
+        -D CMAKE_CXX_COMPILER_LAUNCHER=sccache
+        -D QT_BUILD_TESTS=OFF
+        -D QT_BUILD_EXAMPLES=OFF
+        -D QT_BUILD_SUBMODULES="qtbase;qtsvg"
+
+    - name: Build Qt
+      run: cmake --build qt6/build --verbose
+  
+    - name: Install Qt
+      run: sudo cmake --install qt6/build --prefix ~/.qtinstall
+
     - name: Print CMake version
       run: cmake --version
 
@@ -54,6 +80,7 @@ jobs:
         -G Ninja
         -D CMAKE_BUILD_TYPE=Release
         -D CMAKE_TOOLCHAIN_FILE=./vcpkg/scripts/buildsystems/vcpkg.cmake
+        -D CMAKE_PREFIX_PATH=~/.qtinstall
 
     - name: build
       run: cmake --build build
