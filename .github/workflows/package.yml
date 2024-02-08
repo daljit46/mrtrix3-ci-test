@@ -66,3 +66,15 @@ jobs:
       with:
         name: mrtrix3
         path: ${{ github.workspace }}/install
+
+    - name: Upload GitHub Actions artifacts of vcpkg logs
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: vcpkg-logs-${{ github.sha }}
+        path: |
+          ${{ github.workspace }}/vcpkg/buildtrees/**/*.log
+          ${{ github.workspace }}/build/vcpkg-bootstrap.log
+          ${{ github.workspace }}/build/vcpkg-manifest-install.log
+          ${{ github.workspace }}/build/vcpkg_installed/vcpkg/issue_body.md
+        if-no-files-found: ignore
