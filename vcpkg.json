@@ -5,6 +5,7 @@
         "eigen3",
         "libpng",
         "tiff",
-        "zlib"
+        "zlib",
+        "fftw3"
     ]
   }
