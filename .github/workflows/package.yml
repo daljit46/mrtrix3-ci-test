@@ -95,8 +95,18 @@ jobs:
     - name: install
       run: cmake --install build --prefix ./mrtrix3_install
 
+    - name: Run linuxdeploy
+      run: |
+        wget "https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage"
+        wget "https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage"
+        chmod +x ./linuxdeploy-x86_64.AppImage
+        chmod +x ./linuxdeploy-plugin-qt-x86_64.AppImage
+        mkdir appdir && appdir/usr
+        cp -r install/* appdir/usr
+        ./linuxdeploy-x86_64.AppImage --appdir appdir --plugin qt
+    
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: mrtrix3
-        path: ${{ github.workspace }}/mrtrix3_install
+        path: ${{ github.workspace }}/appdir/usr
