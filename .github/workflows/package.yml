@@ -47,7 +47,15 @@ jobs:
     - name: Run sccache-cache
       uses: mozilla-actions/sccache-action@v0.0.3
 
+    - name: Cache Qt
+      id: cache-qt
+      uses: actions/cache@v4
+      with:
+        path: ~/.qtinstall
+        key: qt
+
     - name: Setup Qt sources
+      if: steps.cache-qt.outputs.cache-hit != 'true'
       run: |
         git clone git://code.qt.io/qt/qt5.git qt6
         cd qt6 && git checkout 6.6.1
@@ -55,6 +63,7 @@ jobs:
         ./configure -list-features
 
     - name: Configure Qt
+      if: steps.cache-qt.outputs.cache-hit != 'true'
       run: >
         cd qt6 &&
         cmake
@@ -71,9 +80,11 @@ jobs:
         -D BUILD_SHARED_LIBS=OFF
 
     - name: Build Qt
+      if: steps.cache-qt.outputs.cache-hit != 'true'
       run: cmake --build qt6/build --verbose
   
     - name: Install Qt
+      if: steps.cache-qt.outputs.cache-hit != 'true'
       run: sudo cmake --install qt6/build --prefix ~/.qtinstall
 
     - name: Print CMake version
