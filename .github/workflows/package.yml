@@ -99,4 +99,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: mrtrix3
-        path: ${{ github.workspace }}/install
+        path: ${{ github.workspace }}/mrtrix3_install
