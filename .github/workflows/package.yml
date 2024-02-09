@@ -103,6 +103,7 @@ jobs:
         chmod +x ./linuxdeploy-plugin-qt-x86_64.AppImage
         mkdir appdir && mkdir appdir/usr
         cp -r install/* appdir/usr
+        export QMAKE=~/.qtinstall/bin/qmake
         ./linuxdeploy-x86_64.AppImage --appdir appdir --plugin qt
     
     - name: Upload artifact
