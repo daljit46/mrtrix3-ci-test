@@ -30,7 +30,13 @@ jobs:
         libxkbcommon-dev \
         libxkbcommon-x11-dev \
         libegl1-mesa-dev \
-        ninja-build
+        ninja-build \
+        python3 \
+        libeigen3-dev \
+        zlib1g-dev \
+        libfftw3-dev \
+        libtiff5-dev \
+        libpng-dev
 
     - name: Install Clang 17
       run: |
@@ -40,15 +46,6 @@ jobs:
 
     - name: Run sccache-cache
       uses: mozilla-actions/sccache-action@v0.0.3
-
-    - name: Clone vcpkg
-      run: git clone https://github.com/microsoft/vcpkg.git
-
-    - name: Setup vcpkg
-      uses: lukka/run-vcpkg@v11
-      with:
-        vcpkgDirectory: ${{ github.workspace }}/vcpkg
-        vcpkgGitCommitId: 53bef8994c541b6561884a8395ea35715ece75db
 
     - name: Setup Qt sources
       run: |
@@ -89,7 +86,6 @@ jobs:
         -G Ninja
         -D CMAKE_CXX_COMPILER=clang++-17
         -D CMAKE_BUILD_TYPE=Release
-        -D CMAKE_TOOLCHAIN_FILE=./vcpkg/scripts/buildsystems/vcpkg.cmake
         -D CMAKE_PREFIX_PATH=~/.qtinstall
         -D MRTRIX_USE_QT6=ON
 
@@ -104,15 +100,3 @@ jobs:
       with:
         name: mrtrix3
         path: ${{ github.workspace }}/install
-
-    - name: Upload GitHub Actions artifacts of vcpkg logs
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: vcpkg-logs-${{ github.sha }}
-        path: |
-          ${{ github.workspace }}/vcpkg/buildtrees/**/*.log
-          ${{ github.workspace }}/build/vcpkg-bootstrap.log
-          ${{ github.workspace }}/build/vcpkg-manifest-install.log
-          ${{ github.workspace }}/build/vcpkg_installed/vcpkg/issue_body.md
-        if-no-files-found: ignore
