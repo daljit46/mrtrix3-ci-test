@@ -58,7 +58,7 @@ jobs:
       if: steps.cache-qt.outputs.cache-hit != 'true'
       run: |
         git clone git://code.qt.io/qt/qt5.git qt6
-        cd qt6 && git checkout 6.6.1
+        cd qt6 && git checkout 6.5.3
         ./init-repository --module-subset=qtbase,qtsvg
         ./configure -list-features
 
