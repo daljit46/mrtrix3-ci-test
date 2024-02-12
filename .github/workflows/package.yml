@@ -120,7 +120,7 @@ jobs:
         mkdir appdir && mkdir appdir/usr
         cp -r mrtrix3_install/* appdir/usr
         export DEBUG=1
-        export QMAKE=${{ github.workspace }}/.qtinstall/bin/qmake6
+        export QMAKE=$HOME/.qtinstall/bin/qmake6
         $QMAKE --version
         $HOME/.qtinstall/bin/qmake --version
         ./linuxdeploy-x86_64.AppImage --appdir appdir --plugin qt
