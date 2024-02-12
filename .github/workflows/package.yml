@@ -54,7 +54,6 @@ jobs:
         host: 'linux'
         arch: 'gcc_64'
         cache-key-prefix: 'install-qt-action'
-        modules: 'qtsvg'
         set-env: 'true'
         dir: ~/.qtinstall
     # - name: Cache Qt
