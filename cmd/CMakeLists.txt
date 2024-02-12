@@ -23,6 +23,8 @@ function(add_cmd CMD_SRC IS_GUI)
         ${CMAKE_INSTALL_BINDIR}
     PERMISSIONS 
         OWNER_READ OWNER_WRITE OWNER_EXECUTE
+        GROUP_READ GROUP_EXECUTE
+        WORLD_READ WORLD_EXECUTE
     )
 
 endfunction()
