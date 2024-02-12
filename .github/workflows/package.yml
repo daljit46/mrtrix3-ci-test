@@ -91,7 +91,7 @@ jobs:
         ls ~/.qtinstall
         ls ~/.qtinstall/bin
         ls $PWD
-        
+
     - name: Print CMake version
       run: cmake --version
 
@@ -122,7 +122,7 @@ jobs:
         export DEBUG=1
         export QMAKE=${{ github.workspace }}/.qtinstall/bin/qmake6
         $QMAKE --version
-        ${{ github.workspace }}/.qtinstall/bin/qmake --version
+        $HOME/.qtinstall/bin/qmake --version
         ./linuxdeploy-x86_64.AppImage --appdir appdir --plugin qt
     
     - name: Upload artifact
