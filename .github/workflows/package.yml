@@ -95,13 +95,6 @@ jobs:
     #   if: steps.cache-qt.outputs.cache-hit != 'true'
     #   run: sudo cmake --install qt6/build --prefix ~/.qtinstall
 
-    - name: Print Qt
-      run: |
-        ls ~/.qtinstall
-        ls ~/.qtinstall/bin
-        ls ~/.qtinstall/lib
-        ls $PWD
-
     - name: Print CMake version
       run: cmake --version
 
@@ -130,9 +123,8 @@ jobs:
         mkdir appdir && mkdir appdir/usr
         cp -r mrtrix3_install/* appdir/usr
         export DEBUG=1
-        export QMAKE=$HOME/.qtinstall/bin/qmake6
+        export QMAKE=$HOME/.qtinstall/Qt/6.5.3/gcc_64/bin/qmake6
         $QMAKE --version
-        $HOME/.qtinstall/bin/qmake --version
         ./linuxdeploy-x86_64.AppImage --appdir appdir --plugin qt --verbosity=0
     
     - name: Upload artifact
