@@ -90,6 +90,7 @@ jobs:
       run: |
         ls ~/.qtinstall
         ls ~/.qtinstall/bin
+        ls ~/.qtinstall/lib
         ls $PWD
 
     - name: Print CMake version
