@@ -115,6 +115,8 @@ jobs:
         cp -r mrtrix3_install/* appdir/usr
         export DEBUG=1
         export QMAKE=${{ github.workspace }}/.qtinstall/bin/qmake6
+        $QMAKE --version
+        ${{ github.workspace }}/.qtinstall/bin/qmake --version
         ./linuxdeploy-x86_64.AppImage --appdir appdir --plugin qt
     
     - name: Upload artifact
