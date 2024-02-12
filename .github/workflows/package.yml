@@ -105,7 +105,7 @@ jobs:
         -G Ninja
         -D CMAKE_CXX_COMPILER=clang++-17
         -D CMAKE_BUILD_TYPE=Release
-        -D CMAKE_PREFIX_PATH=~/.qtinstall/Qt/gcc_64
+        -D CMAKE_PREFIX_PATH=~/.qtinstall/Qt/6.5.3/gcc_64
         -D MRTRIX_USE_QT6=ON
 
     - name: build
