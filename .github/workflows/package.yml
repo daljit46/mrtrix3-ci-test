@@ -105,7 +105,6 @@ jobs:
         -G Ninja
         -D CMAKE_CXX_COMPILER=clang++-17
         -D CMAKE_BUILD_TYPE=Release
-        -D CMAKE_PREFIX_PATH=~/.qtinstall
         -D MRTRIX_USE_QT6=ON
 
     - name: build
