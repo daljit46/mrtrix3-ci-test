@@ -55,47 +55,6 @@ jobs:
         arch: 'gcc_64'
         cache-key-prefix: 'install-qt-action'
         set-env: 'true'
-    # - name: Cache Qt
-    #   id: cache-qt
-    #   uses: actions/cache@v4
-    #   with:
-    #     path: ~/.qtinstall
-    #     key: qt
-
-    # - name: Setup Qt sources
-    #   if: steps.cache-qt.outputs.cache-hit != 'true'
-    #   run: |
-    #     git clone git://code.qt.io/qt/qt5.git qt6
-    #     cd qt6 && git checkout 6.5.3
-    #     ./init-repository --module-subset=qtbase,qtsvg
-    #     ./configure -list-features
-
-    # - name: Configure Qt
-    #   if: steps.cache-qt.outputs.cache-hit != 'true'
-    #   run: >
-    #     cd qt6 &&
-    #     cmake
-    #     -B build
-    #     -G Ninja
-    #     -D CMAKE_BUILD_TYPE=Release
-    #     -D CMAKE_C_COMPILER=clang-17
-    #     -D CMAKE_CXX_COMPILER=clang++-17
-    #     -D CMAKE_C_COMPILER_LAUNCHER=sccache
-    #     -D CMAKE_CXX_COMPILER_LAUNCHER=sccache
-    #     -D QT_BUILD_TESTS=OFF
-    #     -D QT_BUILD_EXAMPLES=OFF
-    #     -D QT_BUILD_SUBMODULES="qtbase;qtsvg"
-
-    # - name: Build Qt
-    #   if: steps.cache-qt.outputs.cache-hit != 'true'
-    #   run: cmake --build qt6/build --verbose
-  
-    # - name: Install Qt
-    #   if: steps.cache-qt.outputs.cache-hit != 'true'
-    #   run: sudo cmake --install qt6/build --prefix ~/.qtinstall
-
-    - name: Print CMake version
-      run: cmake --version
 
     - name: configure
       run: >
