@@ -20,16 +20,7 @@ jobs:
     - name: install dependencies
       run: | 
         sudo apt install cmake \
-        autoconf-archive \
-        '^libxcb.*-dev' \
-        libxkbcommon-dev \
-        libx11-xcb-dev \
-        libglu1-mesa-dev \
-        libxrender-dev \
-        libxi-dev \
-        libxkbcommon-dev \
-        libxkbcommon-x11-dev \
-        libegl1-mesa-dev \
+        libgl1-mesa-dev \
         ninja-build \
         python3 \
         libeigen3-dev \
