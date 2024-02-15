@@ -11,3 +11,7 @@ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/mrtrix3/
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/icons/desktop/
     DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor
 )
+
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/applications/mrview.desktop
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/applications
+)
