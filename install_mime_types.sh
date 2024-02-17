@@ -16,8 +16,8 @@
 # For more details, see http://www.mrtrix.org/.
 
 for s in 16 32 48 64 128; do
-  xdg-icon-resource install --context apps --size $s share/icons/hicolor/${s}x${s}/mrtrix.png application-x-mrtrix
-  xdg-icon-resource install --context mimetypes --size $s share/icons/hicolor/${s}x${s}/mrtrix.png x-mrtrix
+  xdg-icon-resource install --context apps --size $s share/icons/hicolor/${s}x${s}/apps/mrtrix.png application-x-mrtrix
+  xdg-icon-resource install --context mimetypes --size $s share/icons/hicolor/${s}x${s}/apps/mrtrix.png x-mrtrix
 done
 
 xdg-mime install share/mime/mrtrix-mime.xml
