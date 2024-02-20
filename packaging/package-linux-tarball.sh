@@ -67,6 +67,7 @@ cmake -B $build_dir -S $source_dir \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=$install_dir \
     -DCMAKE_EXE_LINKER_FLAGS="-Wl,--as-needed" \
+    -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON \
     -DMRTRIX_USE_QT6=ON 
 
 cmake --build $build_dir
