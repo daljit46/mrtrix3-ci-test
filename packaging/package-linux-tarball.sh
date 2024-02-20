@@ -66,6 +66,7 @@ cmake -B $build_dir -S $source_dir \
     -DCMAKE_CXX_COMPILER=clang++-17 \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=$install_dir \
+    -DCMAKE_EXE_LINKER_FLAGS="-Wl,--as-needed" \
     -DMRTRIX_USE_QT6=ON 
 
 cmake --build $build_dir
