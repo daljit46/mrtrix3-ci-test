@@ -47,13 +47,18 @@ jobs:
     env:
       SCCACHE_GHA_ENABLED: "true"
       SCCACHE_SIZE: "2G"
+      PACKAGES: "qt eigen pkg-config fftw libpng ninja cmake"
 
     steps:
       - name: Fetch recipe
         run: git clone https://github.com/daljit46/macos-installer.git -b cmake_qt6_universal
       
-      - name: Update brew
-        run: brew update || brew update
+      - name: install dependencies
+        run: |
+          brew update || brew update     # https://github.com/Homebrew/brew/issues/2491#issuecomment-294207661
+          brew install $PACKAGES || brew install $PACKAGES
+          brew link --force qt
+
 
       - name: Build package
         run: ./build dev
