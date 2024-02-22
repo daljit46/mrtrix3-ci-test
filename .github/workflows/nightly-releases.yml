@@ -71,7 +71,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: mrtrix3-macos-${{ github.sha }}.tar.gz
-          path: ./macos-installer/mrtrix3-macos-dev.tar.gz
+          path: ./macos-installer/mrtrix3-macos-dev.tar.xz
 
   update-nightly-version:
     runs-on: ubuntu-20.04
@@ -97,3 +97,4 @@ jobs:
             It is not intended for production use.
           files:
             ./artifacts/*.tar.gz
+            ./artifacts/*.tar.xz
