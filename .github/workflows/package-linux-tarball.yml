@@ -14,15 +14,22 @@ jobs:
     - uses: actions/checkout@v1
       with:
         submodules: true
+     
+    - name: Build Qt 6
+      run:
+        git clone git://code.qt.io/qt/qt5.git
+        cd qt5
+        git checkout 6.6.1
+        ./init-repository
+        cmake -B build -DQT_BUILD_EXAMPLES=OFF -DQT_BUILD_TESTS=OFF
+        cmake --build build
+        cmake --install build --prefix /usr/local/qt6
 
-    - name: Install Qt 6
-      uses: jurplel/install-qt-action@v3
-      with:
-        version: '6.6.1'
-        set-env: true
-                
     - name: Run tarball script
       run: |
+        export CMAKE_PREFIX_PATH=/usr/local/qt6
+        export QMAKE=/usr/local/qt6/bin/qmake
+        export LD_LIBRARY_PATH=/usr/local/qt6/lib
         ./packaging/package-linux-tarball.sh .
         mv mrtrix.tar.gz mrtrix-$(git describe --tags --abbrev=0)-linux.tar.gz
 
