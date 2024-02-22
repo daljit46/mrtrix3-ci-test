@@ -59,6 +59,8 @@ jobs:
           brew install $PACKAGES || brew install $PACKAGES
           brew link --force qt
 
+      - name: Run sccache
+        uses: mozilla-actions/sccache-action@v0.0.3
 
       - name: Build package
         run: |
