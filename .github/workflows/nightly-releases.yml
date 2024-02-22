@@ -39,7 +39,7 @@ jobs:
     - name: Upload linux artifact
       uses: actions/upload-artifact@v2
       with:
-        name: mrtrix3-linux-nightly.tar.gz
+        name: mrtrix3-linux-${{ github.event.repository.updated_at}}-${{ github.sha }}.tar.gz
         path: ${{ steps.package.outputs.asset_path }}
 
   macos-nightly-release:
@@ -56,14 +56,14 @@ jobs:
         run: brew update || brew update
 
       - name: Build package
-        run: ./build nightly
+        run: ./build dev
         working-directory: ./macos-installer
 
       - name: Upload macos artifact
         uses: actions/upload-artifact@v2
         with:
-          name: mrtrix3-macos-nightly.tar.gz
-          path: ./macos-installer/mrtrix3-macos-nightly.tar.gz
+          name: mrtrix3-macos-${{ github.event.repository.updated_at}}-${{ github.sha }}.tar.gz
+          path: ./macos-installer/mrtrix3-macos-dev.tar.gz
 
   update-nightly-version:
     runs-on: ubuntu-20.04
