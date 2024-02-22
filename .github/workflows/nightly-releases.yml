@@ -64,8 +64,6 @@ jobs:
 
       - name: Build package
         run: |
-          export CC="sccache clang"
-          export CXX="sccache clang++"
           ./build dev
         working-directory: ./macos-installer
 
