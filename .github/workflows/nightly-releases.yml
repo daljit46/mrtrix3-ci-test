@@ -1,0 +1,91 @@
+name: nightly-builds
+
+on:
+  # Run this every hour
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+      
+jobs:
+  linux-nightly-release:
+    runs-on: ubuntu-20.04
+    env:
+      SCCACHE_GHA_ENABLED: "true"
+      SCCACHE_SIZE: "2G"
+
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        submodules: true
+
+    - name: Install Qt 6
+      uses: jurplel/install-qt-action@v3
+      with:
+        version: '6.6.1'
+        set-env: true
+    
+    - name: Run sccache
+      uses: mozilla-actions/sccache-action@v0.0.3
+
+    - name: Run tarball script
+      id: package
+      run: |
+        ./packaging/package-linux-tarball.sh .
+        mv mrtrix.tar.gz mrtrix-$(git describe --tags --abbrev=0)-linux.tar.gz
+        # set the name of the tarball as an output
+        # this will be used by the next step to upload the tarball
+        echo "::set-output name=asset_path::mrtrix-$(git describe --tags --abbrev=0)-linux.tar.gz"
+      
+    - name: Upload linux artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: mrtrix3-linux-nightly.tar.gz
+        path: ${{ steps.package.outputs.asset_path }}
+
+  macos-nightly-release:
+    runs-on: macos-latest
+    env:
+      SCCACHE_GHA_ENABLED: "true"
+      SCCACHE_SIZE: "2G"
+
+    steps:
+      - name: Fetch recipe
+        run: git clone https://github.com/MRtrix3/macos-installer.git -b cmake_qt6_universal
+      
+      - name: Update brew
+        run: brew update || brew update
+
+      - name: Build package
+        run: ./build nightly
+        working-directory: ./macos-installer
+
+      - name: Upload macos artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: mrtrix3-macos-nightly.tar.gz
+          path: ./macos-installer/mrtrix3-macos-nightly.tar.gz
+
+  update-nightly-version:
+    runs-on: ubuntu-20.04
+    needs: [linux-nightly-release, macos-nightly-release]
+    steps:
+      - name: Download Artifacts from previous jobs
+        uses: actions/download-artifact@v4
+        with:
+          path: ./artifacts
+          pattern: mrtrix3-*.tar.gz
+          merge-multiple: true
+
+      - name: Update Nightly Release
+        uses: andelf/nightly-release@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: nightly
+          name: 'MRtrix3 Nightly Release $$'
+          prerelease: true
+          body: |
+            This is an automated nightly build of MRtrix3.
+            It is not intended for production use.
+          files:
+            ./artifacts/*.tar.gz
