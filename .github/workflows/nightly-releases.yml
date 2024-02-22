@@ -61,7 +61,10 @@ jobs:
 
 
       - name: Build package
-        run: ./build dev
+        run: |
+          export CC="sccache clang"
+          export CXX="sccache clang++"
+          ./build dev
         working-directory: ./macos-installer
 
       - name: Upload macos artifact
