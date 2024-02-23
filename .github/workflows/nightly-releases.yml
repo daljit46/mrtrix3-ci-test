@@ -65,7 +65,7 @@ jobs:
         run: |
           ./build dev
           ls
-          mv mrtrix3-macos-dev.tar.xz mrtrix3-macos-${{ github.sha }}.tar.xz
+          mv mrtrix3-macos-dev.tar.xz ../mrtrix3-macos-${{ github.sha }}.tar.xz
         working-directory: ./macos-installer
 
       - name: Upload macos artifact
