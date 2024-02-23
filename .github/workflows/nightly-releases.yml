@@ -50,7 +50,7 @@ jobs:
 
     steps:
       - name: Fetch recipe
-        run: git clone https://github.com/daljit46/macos-installer.git -b cmake_qt6_universal
+        run: git clone https://github.com/mrtrix3/macos-installer.git -b cmake_qt6_universal
       
       - name: install dependencies
         run: |
