@@ -14,7 +14,7 @@ jobs:
       SCCACHE_SIZE: "2G"
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
       with:
         submodules: true
 
@@ -63,6 +63,7 @@ jobs:
       - name: Build package
         run: |
           ./build dev
+          ls
           mv mrtrix3-macos-dev.tar.xz mrtrix3-macos-${{ github.sha }}.tar.xz
         working-directory: ./macos-installer
 
