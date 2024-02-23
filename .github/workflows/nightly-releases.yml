@@ -71,8 +71,8 @@ jobs:
       - name: Upload macos artifact
         uses: actions/upload-artifact@v4
         with:
-          name: mrtrix3-macos-${{ github.sha }}.tar.gz
-          path: mrtrix3-macos-${{ github.sha }}.tar.gz
+          name: mrtrix3-macos-${{ github.sha }}.tar.xz
+          path: mrtrix3-macos-${{ github.sha }}.tar.xz
 
   update-nightly-version:
     runs-on: ubuntu-latest
