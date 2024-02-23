@@ -75,61 +75,61 @@ jobs:
           path: mrtrix3-macos-${{ github.sha }}.tar.xz
 
   windows-nightly-release:
-  runs-on: windows-latest
-  defaults:
-    run:
-      shell: msys2 {0}
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
 
-  env:
-    CHERE_INVOKING: enabled_from_arguments
-    MINGW_PACKAGE_PREFIX: mingw-w64-ucrt-x86_64
-    SCCACHE_GHA_ENABLED: "true"
-    SCCACHE_CACHE_SIZE: "2G"
-    SCCACHE_DIR: ${{ github.workspace }}/.sccache
+    env:
+      CHERE_INVOKING: enabled_from_arguments
+      MINGW_PACKAGE_PREFIX: mingw-w64-ucrt-x86_64
+      SCCACHE_GHA_ENABLED: "true"
+      SCCACHE_CACHE_SIZE: "2G"
+      SCCACHE_DIR: ${{ github.workspace }}/.sccache
 
-  steps:
-    - uses: msys2/setup-msys2@v2
-      with:
-        msystem: UCRT64
-        release: false
-        install: |
-          git
-          python
-          ${{env.MINGW_PACKAGE_PREFIX}}-bc
-          ${{env.MINGW_PACKAGE_PREFIX}}-cmake
-          ${{env.MINGW_PACKAGE_PREFIX}}-diffutils
-          ${{env.MINGW_PACKAGE_PREFIX}}-eigen3
-          ${{env.MINGW_PACKAGE_PREFIX}}-fftw
-          ${{env.MINGW_PACKAGE_PREFIX}}-gcc
-          ${{env.MINGW_PACKAGE_PREFIX}}-libtiff
-          ${{env.MINGW_PACKAGE_PREFIX}}-ninja
-          ${{env.MINGW_PACKAGE_PREFIX}}-pkg-config
-          ${{env.MINGW_PACKAGE_PREFIX}}-qt5-base
-          ${{env.MINGW_PACKAGE_PREFIX}}-qt5-svg
-          ${{env.MINGW_PACKAGE_PREFIX}}-zlib
+    steps:
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          release: false
+          install: |
+            git
+            python
+            ${{env.MINGW_PACKAGE_PREFIX}}-bc
+            ${{env.MINGW_PACKAGE_PREFIX}}-cmake
+            ${{env.MINGW_PACKAGE_PREFIX}}-diffutils
+            ${{env.MINGW_PACKAGE_PREFIX}}-eigen3
+            ${{env.MINGW_PACKAGE_PREFIX}}-fftw
+            ${{env.MINGW_PACKAGE_PREFIX}}-gcc
+            ${{env.MINGW_PACKAGE_PREFIX}}-libtiff
+            ${{env.MINGW_PACKAGE_PREFIX}}-ninja
+            ${{env.MINGW_PACKAGE_PREFIX}}-pkg-config
+            ${{env.MINGW_PACKAGE_PREFIX}}-qt5-base
+            ${{env.MINGW_PACKAGE_PREFIX}}-qt5-svg
+            ${{env.MINGW_PACKAGE_PREFIX}}-zlib
 
-    - name: Run sccache-cache
-      uses: mozilla-actions/sccache-action@v0.0.3
+      - name: Run sccache-cache
+        uses: mozilla-actions/sccache-action@v0.0.3
 
-    - name: export sccache to msys2 shell
-      run: |
-        export SCCACHE_UNIX_PATH=$(cygpath -u "$SCCACHE_PATH")
-        echo "SCCACHE_UNIX_PATH=$SCCACHE_UNIX_PATH" >> $GITHUB_ENV
+      - name: export sccache to msys2 shell
+        run: |
+          export SCCACHE_UNIX_PATH=$(cygpath -u "$SCCACHE_PATH")
+          echo "SCCACHE_UNIX_PATH=$SCCACHE_UNIX_PATH" >> $GITHUB_ENV
 
-    - name: Clone packaging repo
-      run: git clone https://github.com/daljit46/MINGW
+      - name: Clone packaging repo
+        run: git clone https://github.com/daljit46/MINGW
 
-    - name: Build package
-      run: |
-        cd MINGW
-        ./run.sh ${{ github.sha }} mrtrix3
-        mv mingw-w64-ucrt-x86_64-mrtrix3*.tar.xz ../mrtrix3-windows-${{ github.sha }}.tar.xz
+      - name: Build package
+        run: |
+          cd MINGW
+          ./run.sh ${{ github.sha }} mrtrix3
+          mv mingw-w64-ucrt-x86_64-mrtrix3*.tar.xz ../mrtrix3-windows-${{ github.sha }}.tar.xz
 
-    - name: Upload windows artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: mrtrix3-windows-${{ github.sha }}.tar.gz
-        path: MINGW/mrtrix3-windows-${{ github.sha }}.tar.xz
+      - name: Upload windows artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mrtrix3-windows-${{ github.sha }}.tar.gz
+          path: MINGW/mrtrix3-windows-${{ github.sha }}.tar.xz
 
   update-nightly-version:
     runs-on: ubuntu-latest
