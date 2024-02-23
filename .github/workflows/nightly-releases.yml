@@ -75,7 +75,7 @@ jobs:
           path: ./macos-installer/mrtrix3-macos-dev.tar.xz
 
   update-nightly-version:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs: [linux-nightly-release, macos-nightly-release]
     steps:
       - name: Download Artifacts from previous jobs
@@ -97,5 +97,5 @@ jobs:
             This is an automated nightly build of MRtrix3.
             It is not intended for production use.
           files:
-            artifacts/*.tar.gz
-            artifacts/*.tar.xz
+            ./artifacts/*.tar.gz
+            ./artifacts/*.tar.xz
