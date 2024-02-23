@@ -96,6 +96,6 @@ jobs:
           body: |
             This is an automated nightly build of MRtrix3.
             It is not intended for production use.
-          files:
+          files: |
             ./artifacts/*.tar.gz
             ./artifacts/*.tar.xz
