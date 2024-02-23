@@ -19,9 +19,6 @@ jobs:
         submodules: true
         fetch-depth: 0
 
-    - name: Check git tag
-      run: git describe --abbrev=0
-
     - name: Install Qt 6
       uses: jurplel/install-qt-action@v3
       with:
