@@ -31,16 +31,13 @@ jobs:
       id: package
       run: |
         ./packaging/package-linux-tarball.sh .
-        mv mrtrix.tar.gz mrtrix-$(git describe --tags --abbrev=0)-linux.tar.gz
-        # set the name of the tarball as an output
-        # this will be used by the next step to upload the tarball
-        echo "::set-output name=asset_path::mrtrix-$(git describe --tags --abbrev=0)-linux.tar.gz"
+        mv mrtrix.tar.gz mrtrix3-linux-${{ github.sha }}.tar.gz
 
     - name: Upload linux artifact
       uses: actions/upload-artifact@v4
       with:
         name: mrtrix3-linux-${{ github.sha }}.tar.gz
-        path: ${{ steps.package.outputs.asset_path }}
+        path: mrtrix3-linux-${{ github.sha }}.tar.gz
 
   macos-nightly-release:
     runs-on: macos-latest
@@ -66,13 +63,14 @@ jobs:
       - name: Build package
         run: |
           ./build dev
+          mv mrtrix3-macos-dev.tar.xz mrtrix3-macos-${{ github.sha }}.tar.xz
         working-directory: ./macos-installer
 
       - name: Upload macos artifact
         uses: actions/upload-artifact@v4
         with:
           name: mrtrix3-macos-${{ github.sha }}.tar.gz
-          path: ./macos-installer/mrtrix3-macos-dev.tar.xz
+          path: mrtrix3-macos-${{ github.sha }}.tar.gz
 
   update-nightly-version:
     runs-on: ubuntu-latest
