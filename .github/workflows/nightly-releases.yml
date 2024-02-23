@@ -37,7 +37,7 @@ jobs:
         echo "::set-output name=asset_path::mrtrix-$(git describe --tags --abbrev=0)-linux.tar.gz"
 
     - name: Upload linux artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: mrtrix3-linux-${{ github.sha }}.tar.gz
         path: ${{ steps.package.outputs.asset_path }}
@@ -68,7 +68,7 @@ jobs:
         working-directory: ./macos-installer
 
       - name: Upload macos artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: mrtrix3-macos-${{ github.sha }}.tar.gz
           path: ./macos-installer/mrtrix3-macos-dev.tar.xz
@@ -80,8 +80,8 @@ jobs:
       - name: Download Artifacts from previous jobs
         uses: actions/download-artifact@v4
         with:
-          path: ./artifacts
-          pattern: mrtrix3-*.tar.gz
+          path: artifacts
+          pattern: mrtrix3-*
           merge-multiple: true
 
       - name: Update Nightly Release
@@ -96,5 +96,5 @@ jobs:
             This is an automated nightly build of MRtrix3.
             It is not intended for production use.
           files:
-            ./artifacts/*.tar.gz
-            ./artifacts/*.tar.xz
+            artifacts/*.tar.gz
+            artifacts/*.tar.xz
