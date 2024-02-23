@@ -104,8 +104,8 @@ jobs:
             ${{env.MINGW_PACKAGE_PREFIX}}-libtiff
             ${{env.MINGW_PACKAGE_PREFIX}}-ninja
             ${{env.MINGW_PACKAGE_PREFIX}}-pkg-config
-            ${{env.MINGW_PACKAGE_PREFIX}}-qt5-base
-            ${{env.MINGW_PACKAGE_PREFIX}}-qt5-svg
+            ${{env.MINGW_PACKAGE_PREFIX}}-qt6-base
+            ${{env.MINGW_PACKAGE_PREFIX}}-qt6-svg
             ${{env.MINGW_PACKAGE_PREFIX}}-zlib
 
       - name: Run sccache-cache
