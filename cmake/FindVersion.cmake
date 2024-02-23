@@ -18,7 +18,7 @@ if(GIT_EXECUTABLE)
     )
 
     if(NOT "${MRTRIX_GIT_TAG}" STREQUAL ${MRTRIX_BASE_VERSION})
-        message(FATAL_ERROR "MRtrix3 base version does not match the git tag!")
+        message(FATAL_ERROR "MRtrix3 base version does not match the git tag! (base: ${MRTRIX_BASE_VERSION}; git: ${MRTRIX_GIT_TAG})")
     endif()
 
     if(NOT MRTRIX_GIT_TAG_ERROR AND NOT MRTRIX_GIT_COMMIT_ERROR)
