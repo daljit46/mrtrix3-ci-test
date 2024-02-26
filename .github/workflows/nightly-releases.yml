@@ -114,7 +114,8 @@ jobs:
       - name: export sccache to msys2 shell
         run: |
           export SCCACHE_UNIX_PATH=$(cygpath -u "$SCCACHE_PATH")
-          echo "SCCACHE_UNIX_PATH=$SCCACHE_UNIX_PATH" >> $GITHUB_ENV
+          SCCACHE_DIR=$(dirname "$SCCACHE_UNIX_PATH")
+          echo "export PATH=$SCCACHE_DIR:$PATH" >> $GITHUB_ENV
 
       - name: Clone packaging repo
         run: git clone https://github.com/daljit46/MINGW
@@ -123,6 +124,7 @@ jobs:
         run: |
           cd MINGW
           ./run.sh ${{ github.sha }} daljit46
+          ls
           mv mingw*.tar.xz ../mrtrix3-windows-${{ github.sha }}.tar.xz
 
       - name: Upload windows artifact
