@@ -130,7 +130,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: mrtrix3-windows-${{ github.sha }}.tar.gz
-          path: MINGW/mrtrix3-windows-${{ github.sha }}.tar.xz
+          path: mrtrix3-windows-${{ github.sha }}.tar.xz
 
   update-nightly-version:
     runs-on: ubuntu-latest
