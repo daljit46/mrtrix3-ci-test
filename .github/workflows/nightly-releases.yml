@@ -115,7 +115,7 @@ jobs:
         run: |
           export SCCACHE_UNIX_PATH=$(cygpath -u "$SCCACHE_PATH")
           SCCACHE_DIR=$(dirname "$SCCACHE_UNIX_PATH")
-          echo "export PATH=$SCCACHE_DIR:$PATH" >> $GITHUB_ENV
+          echo "PATH=$SCCACHE_DIR:$PATH" >> $GITHUB_ENV
 
       - name: Clone packaging repo
         run: git clone https://github.com/daljit46/MINGW
