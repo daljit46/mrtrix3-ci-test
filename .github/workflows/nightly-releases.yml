@@ -123,7 +123,7 @@ jobs:
         run: |
           cd MINGW
           ./run.sh ${{ github.sha }} daljit46
-          mv mingw-w64-ucrt-x86_64-mrtrix3*.tar.xz ../mrtrix3-windows-${{ github.sha }}.tar.xz
+          mv mingw*.tar.xz ../mrtrix3-windows-${{ github.sha }}.tar.xz
 
       - name: Upload windows artifact
         uses: actions/upload-artifact@v4
