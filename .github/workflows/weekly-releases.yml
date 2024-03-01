@@ -137,8 +137,9 @@ jobs:
       - name: Run build script
         run: |
           commit_sha=$(git rev-parse HEAD)
-          ./packaging/mingw/run.sh $commit_sha ${{ github.repository_owner }} 
-          mv mingw*.tar.zst ../mrtrix3-windows.tar.zst
+          cd packaging/mingw
+          ./run.sh $commit_sha ${{ github.repository_owner }}
+          mv mingw*.tar.zst ../../mrtrix3-windows.tar.zst
 
       - name: Upload Windows release
         uses: WebFreak001/deploy-nightly@v3.1.0
