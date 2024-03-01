@@ -31,7 +31,7 @@ jobs:
         set-env: true
     
     - name: Setup sccache
-      uses: mozilla-actions/sccache-action@v0.0.3
+      uses: mozilla-actions/sccache-action@v0.0.4
 
     - name: Run build script
       run: |
@@ -69,7 +69,7 @@ jobs:
           brew link --force qt
 
       - name: Run sccache
-        uses: mozilla-actions/sccache-action@v0.0.3
+        uses: mozilla-actions/sccache-action@v0.0.4
 
       - name: Run build script
         run: |
@@ -128,7 +128,7 @@ jobs:
             ${{env.MINGW_PACKAGE_PREFIX}}-zlib
 
       - name: Run sccache-cache
-        uses: mozilla-actions/sccache-action@v0.0.3
+        uses: mozilla-actions/sccache-action@v0.0.4
 
       - name: export sccache to msys2 shell
         run: |
