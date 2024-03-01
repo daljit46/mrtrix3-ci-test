@@ -73,7 +73,7 @@ jobs:
 
       - name: Run build script
         run: |
-          ./packaging/macos/package-linux-tarball.sh dev
+          ./packaging/macos/build dev
           mv ./packaging/macos/mrtrix3-macos-dev.tar.xz ../mrtrix3-macos-tar.xz
 
       - name: Upload macOS release
