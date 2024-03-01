@@ -23,7 +23,7 @@ jobs:
       with:
         submodules: true
         fetch-depth: 0
-        checkout: dev
+        ref: dev
 
     - name: Install Qt 6
       uses: jurplel/install-qt-action@v3
