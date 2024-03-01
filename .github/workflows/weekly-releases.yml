@@ -75,7 +75,7 @@ jobs:
         run: |
           cd packaging/macos
           ./build dev
-          mv ./packaging/macos/mrtrix3-macos-dev.tar.xz ../../mrtrix3-macos-tar.xz
+          mv ./mrtrix3-macos-dev.tar.xz ../../mrtrix3-macos-tar.xz
 
       - name: Upload macOS release
         uses: WebFreak001/deploy-nightly@v3.1.0
