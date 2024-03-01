@@ -109,7 +109,7 @@ jobs:
 
       - uses: msys2/setup-msys2@v2
         with:
-          msystem: URT64
+          msystem: UCRT64
           release: false
           install: |
             git
