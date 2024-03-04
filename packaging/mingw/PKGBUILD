@@ -1,6 +1,6 @@
 # Maintainer: J-Donald Tournier <jdtournier@gmail.com>
 
-_realname=mrtrix3
+_realname=mrtrix3-ci-test
 pkgbase=mingw-w64-${_realname}
 pkgname="${MINGW_PACKAGE_PREFIX}-${_realname}"
 pkgver=0
