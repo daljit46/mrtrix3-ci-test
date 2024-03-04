@@ -32,16 +32,22 @@ jobs:
     - name: Setup sccache
       uses: mozilla-actions/sccache-action@v0.0.4
 
+    - name: Get commit sha
+      run: |
+        commit_sha=$(git rev-parse HEAD)
+        echo "COMMIT_SHA=$commit_sha" >> $GITHUB_ENV
+
     - name: Run build script
       run: |
         ./packaging/package-linux-tarball.sh .
         mv mrtrix.tar.gz mrtrix3-linux-tar.gz
-    
+
     - name: Upload Linux release
       uses: WebFreak001/deploy-nightly@v3.1.0
       with: 
         upload_url: ${{ env.UPLOAD_URL }} 
         release_id: ${{ env.RELEASE_ID }} 
+        sha: ${{ env.COMMIT_SHA }}
         asset_path: ./mrtrix3-linux-tar.gz
         asset_name: mrtrix3-linux-weekly-$$.tar.gz
         asset_content_type: application/gzip
@@ -70,6 +76,11 @@ jobs:
       - name: Run sccache
         uses: mozilla-actions/sccache-action@v0.0.4
 
+      - name: Get commit sha
+        run: |
+          commit_sha=$(git rev-parse HEAD)
+          echo "COMMIT_SHA=$commit_sha" >> $GITHUB_ENV
+
       - name: Run build script
         run: |
           cd packaging/macos
@@ -81,6 +92,7 @@ jobs:
         with:
           upload_url: ${{ env.UPLOAD_URL }}
           release_id: ${{ env.RELEASE_ID }} 
+          sha: ${{ env.COMMIT_SHA }}
           asset_path: ./mrtrix3-macos-tar.xz
           asset_name: mrtrix3-macos-weekly-$$.tar.xz
           asset_content_type: application/x-xz
@@ -134,11 +146,15 @@ jobs:
           export SCCACHE_UNIX_PATH=$(cygpath -u "$SCCACHE_PATH")
           echo "CMAKE_CXX_COMPILER_LAUNCHER=$SCCACHE_UNIX_PATH" >> $GITHUB_ENV
 
-      - name: Run build script
+      - name: Get commit sha
         run: |
           commit_sha=$(git rev-parse HEAD)
+          echo "COMMIT_SHA=$commit_sha" >> $GITHUB_ENV
+
+      - name: Run build script
+        run: |
           cd packaging/mingw
-          ./run.sh $commit_sha ${{ github.repository_owner }}
+          ./run.sh ${{ env.COMMIT_SHA }} ${{ github.repository_owner }}
           mv mingw*.tar.zst ../../mrtrix3-windows.tar.zst
 
       - name: Upload Windows release
@@ -146,6 +162,7 @@ jobs:
         with:
           upload_url: ${{ env.UPLOAD_URL }}
           release_id: ${{ env.RELEASE_ID }}
+          sha: ${{ env.COMMIT_SHA }}
           asset_path: ./mrtrix3-windows.tar.zst
           asset_name: mrtrix3-windows-weekly-$$.tar.zst
           asset_content_type: application/x-zstd
