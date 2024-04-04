@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 
-project(mrtrix3 LANGUAGES CXX VERSION 3.0.4)
+project(mrtrix3 LANGUAGES C CXX VERSION 3.0.4)
 
 include(GNUInstallDirs)
 
