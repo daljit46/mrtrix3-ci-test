@@ -37,7 +37,7 @@ namespace MR::Math {
  * used - this ensures the seeds are unique across instances in
  * multi-threading. */
 // TODO consider switch to std::mt19937_64
-class RNG : public std::mt19937 {
+class __declspec(dllexport) RNG : public std::mt19937 {
 public:
   RNG() : std::mt19937(get_seed()) {}
   RNG(std::mt19937::result_type seed) : std::mt19937(seed) {}
