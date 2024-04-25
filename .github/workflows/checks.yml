@@ -62,6 +62,8 @@ jobs:
             -G Ninja
             -D CMAKE_BUILD_TYPE=Release
             -D CMAKE_CXX_COMPILER=${{matrix.compiler}}
+            # If compiler is g++, we set -fno-use-linker-plugin to CMAKE_CXX_FLAGS
+            -D CMAKE_CXX_FLAGS=${{matrix.compiler}} STREQUAL "g++" ? "-fno-use-linker-plugin" : ""
             -D CMAKE_INTERPROCEDURAL_OPTIMIZATION=${{matrix.lto}}
             -D MRTRIX_BUILD_TESTS=ON
             -D MRTRIX_STL_DEBUGGING=ON
