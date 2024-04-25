@@ -64,7 +64,6 @@ jobs:
             -D CMAKE_CXX_COMPILER=${{matrix.compiler}}
             -D CMAKE_CXX_FLAGS="-femulated-tls"
             -D CMAKE_INTERPROCEDURAL_OPTIMIZATION=${{matrix.lto}}
-            -D CMAKE_LINKER_TYPE=LLD
             -D MRTRIX_BUILD_TESTS=ON
             -D MRTRIX_STL_DEBUGGING=ON
             -D MRTRIX_WARNINGS_AS_ERRORS=ON
