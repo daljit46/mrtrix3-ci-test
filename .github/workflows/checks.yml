@@ -67,3 +67,9 @@ jobs:
 
       - name: build
         run: cmake --build build
+
+      - name: bin tests
+        run: ctest --test-dir build --output-on-failure -R bin
+
+      - name: unit tests
+        run: ctest --test-dir build --output-on-failure -R unit
