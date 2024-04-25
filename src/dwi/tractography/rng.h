@@ -21,6 +21,6 @@
 namespace MR::DWI::Tractography {
 
 //! thread-local, but globally accessible RNG to vastly simplify multi-threading
-extern thread_local Math::RNG rng;
+__declspec( dllexport ) extern thread_local Math::RNG rng;
 
 } // namespace MR::DWI::Tractography
