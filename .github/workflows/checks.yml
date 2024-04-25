@@ -15,6 +15,7 @@ jobs:
     strategy:
       matrix:
         compiler: [g++, clang++]
+        lto: [OFF, ON]
     defaults:
       run:
         shell: msys2 {0}
@@ -60,6 +61,7 @@ jobs:
             -G Ninja
             -D CMAKE_BUILD_TYPE=Release
             -D CMAKE_CXX_COMPILER=${{matrix.compiler}}
+            -D CMAKE_INTERPROCEDURAL_OPTIMIZATION=${{matrix.lto}}
             -D CMAKE_LINKER_TYPE=LLD
             -D MRTRIX_BUILD_TESTS=ON
             -D MRTRIX_STL_DEBUGGING=ON
