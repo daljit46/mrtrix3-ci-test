@@ -118,5 +118,3 @@ Image<bool> Mask::__get_mask(const std::string &name) {
 }
 
 } // namespace MR::DWI::Tractography
-
-template MR::Transform::Transform(const MR::DWI::Tractography::Mask &);
