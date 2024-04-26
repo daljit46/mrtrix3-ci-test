@@ -32,7 +32,7 @@ jobs:
         with:
           submodules: true
 
-      - uses: msys2/setup-msys2@v2
+      - uses: msys2/setup-msys2@v2.22.0 
         with:
           msystem: CLANG64 
           release: false
