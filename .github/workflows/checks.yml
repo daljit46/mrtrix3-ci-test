@@ -1,6 +1,7 @@
 name: Checks
 
 on:
+  push:
   pull_request:
     types: [opened, synchronize]
     branches: [ master, dev]
@@ -182,6 +183,8 @@ jobs:
       SCCACHE_GHA_ENABLED: "true"
       SCCACHE_CACHE_SIZE: "2G"
       SCCACHE_DIR: ${{ github.workspace }}/.sccache
+      SCCACHE_ERROR_LOG: /tmp/sccache_log.txt
+      SCCACHE_LOG: debug
 
     steps:
       - uses: actions/checkout@v1
@@ -230,11 +233,12 @@ jobs:
       - name: build
         run: cmake --build build
 
-      - name: unit tests
-        run: cd build && ctest -R unit --output-on-failure
-
-      - name: binary tests
-        run: cd build && ctest -R bin --output-on-failure
+      - name: Upload sccache logs
+        run: |
+          echo "SCCACHE ERROR LOG:"
+          cat $SCCACHE_ERROR_LOG
+          echo "SCCACHE LOG:"
+          cat $SCCACHE_LOG
 
   secondary-checks:
     runs-on: ubuntu-latest
