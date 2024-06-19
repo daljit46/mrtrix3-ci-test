@@ -41,7 +41,19 @@ jobs:
         ./packaging/package-linux-tarball.sh .
         mv mrtrix.tar.gz mrtrix3-linux-tar.gz
     
+    - name: Upload Linux release artifact
+      # If the workflow has been triggered by a manual event, we don't want to upload the release
+      # artifact to the release page, but only upload artifacts to the workflow run
+      if: github.event_name == 'workflow_dispatch'
+      uses: actions/upload-artifact@v4
+      with:
+        # name needs to contain branch name to avoid conflicts
+        name: mrtrix3-linux-${{ github.event.inputs.branch }}-$GITHUB_RUN_NUMBER.tar.gz
+        path: ./mrtrix3-linux-tar.gz
+        retention-days: 30
+
     - name: Upload Linux release
+      if: github.event_name != 'workflow_dispatch'
       uses: WebFreak001/deploy-nightly@v3.1.0
       with: 
         upload_url: ${{ env.UPLOAD_URL }} 
@@ -79,8 +91,17 @@ jobs:
           cd packaging/macos
           ./build dev
           mv ./mrtrix3-macos-dev.tar.xz ../../mrtrix3-macos-tar.xz
+      
+      - name: Upload macOS release artifact
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: mrtrix3-macos-${{ github.event.inputs.branch }}-$GITHUB_RUN_NUMBER.tar.xz
+          path: ./mrtrix3-macos-tar.xz
+          retention-days: 30
 
       - name: Upload macOS release
+        if: github.event_name != 'workflow_dispatch'
         uses: WebFreak001/deploy-nightly@v3.1.0
         with:
           upload_url: ${{ env.UPLOAD_URL }}
@@ -145,7 +166,16 @@ jobs:
           ./run.sh $commit_sha ${{ github.repository_owner }}
           mv mingw*.tar.zst ../../mrtrix3-windows.tar.zst
 
+      - name: Upload Windows release artifact
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: mrtrix3-windows-${{ github.event.inputs.branch }}-$GITHUB_RUN_NUMBER.tar.zst
+          path: ./mrtrix3-windows.tar.zst
+          retention-days: 30
+
       - name: Upload Windows release
+        if: github.event_name != 'workflow_dispatch'
         uses: WebFreak001/deploy-nightly@v3.1.0
         with:
           upload_url: ${{ env.UPLOAD_URL }}
