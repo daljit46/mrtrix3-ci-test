@@ -22,7 +22,7 @@ jobs:
       SCCACHE_SIZE: "2G"
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 0
         ref: ${{ github.event.inputs.branch }}
@@ -81,7 +81,7 @@ jobs:
       PACKAGES: "qt eigen pkg-config fftw libpng ninja cmake"
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
           ref: dev
@@ -134,7 +134,7 @@ jobs:
       SCCACHE_DIR: ${{ github.workspace }}/.sccache
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
           fetch-depth: 0
