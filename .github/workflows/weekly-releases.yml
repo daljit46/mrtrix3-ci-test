@@ -32,7 +32,16 @@ jobs:
       with:
         version: '6.6.2'
         set-env: true
-    
+
+    - name: Install Eigen
+      run: |
+        git clone https://gitlab.com/libeigen/eigen.git
+        cd eigen
+        git checkout 3.4.0
+        cmake -B build -S .
+        cmake --build build
+        sudo cmake --install build
+
     - name: Setup sccache
       uses: mozilla-actions/sccache-action@v0.0.4
 
