@@ -86,7 +86,7 @@ else
   curl -s -O -L https://gitlab.com/libeigen/eigen/-/archive/${EIGEN_VERSION}/${FNAME}
   tar xf ${FNAME}
   cd ${DNAME}
-  ${CMAKE} -B build -DCMAKE_INSTALL_PREFIX=${PREFIX} -DCMAKE_IGNORE_PREFIX_PATH=/opt/homebrew
+  ${CMAKE} -B build -DCMAKE_INSTALL_PREFIX=${PREFIX} -DCMAKE_IGNORE_PREFIX_PATH=/opt/homebrew -DMRTRIX_USE_PCH=OFF
   ${CMAKE} --build build
   ${CMAKE} --install build
   cd ..
