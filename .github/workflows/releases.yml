@@ -13,6 +13,13 @@ jobs:
           fetch-depth: 0
           ref: packaging_changes
 
+      - name: Install Eigen3
+        run: |
+          git clone https://gitlab.com/libeigen/eigen.git
+          cmake -B eigen/build -S eigen
+          cmake --build eigen/build
+          sudo cmake --install eigen/build
+
       - name: Install Qt 6
         uses: jurplel/install-qt-action@v3
         with:
