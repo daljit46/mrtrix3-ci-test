@@ -21,7 +21,7 @@ jobs:
 
       - name: Run build
         run: |
-          ./packaging/package-linux-tarball.sh
+          ./packaging/package-linux-tarball.sh .
           mv mrtrix.tar.gz mrtrix-linux.tar.gz
 
       - name: Upload release artifact
@@ -45,8 +45,8 @@ jobs:
 
       - name: Run build
         run: |
-          ./packaging/macos
-          ./build/dev
+          cd ./packaging/macos
+          ./build dev
           mv ./mrtrix3-macos-dev.tar.gz ../../mrtrix-macos.tar.gz
 
       - name: Upload release artifact
@@ -93,7 +93,7 @@ jobs:
         run: |
           commit_sha=$(git rev-parse HEAD)
           cd packaging/mingw
-          ./run.sh $commit_sha ${{ github.repository_owner }}
+          ./run.sh packaging_changes mrtrix3
           mv mingw*.tar.zst ../../mrtrix-windows.tar.zst
 
       - name: Upload release artifact
