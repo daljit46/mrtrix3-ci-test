@@ -33,13 +33,13 @@ jobs:
       - name: Run build
         run: |
           ./packaging/package-linux-tarball.sh .
-          mv mrtrix.tar.gz mrtrix-linux.tar.gz
+          mv mrtrix.tar.gz mrtrix-linux-${{ github.event.inputs.branch }}.tar.gz
 
       - name: Upload release artifact
         uses: actions/upload-artifact@v4
         with:
           name: mrtrix-linux-${{ github.event.inputs.branch }}
-          path: mrtrix-linux.tar.gz
+          path: mrtrix-linux-${{ github.event.inputs.branch }}.tar.gz
 
   macos-release:
     runs-on: macos-latest
@@ -56,13 +56,13 @@ jobs:
         run: |
           cd ./packaging/macos
           ./build dev
-          mv ./mrtrix3-macos-dev.tar.xz ../../mrtrix-macos.tar.xz
+          mv ./mrtrix3-macos-dev.tar.xz ../../mrtrix-macos-${{ github.events.inputs.branch }}.tar.xz
 
       - name: Upload release artifact
         uses: actions/upload-artifact@v4
         with:
           name: mrtrix-macos-${{ github.event.inputs.branch }}
-          path: mrtrix-macos.tar.xz
+          path: mrtrix-macos-${{ github.event.inputs.branch }}.tar.xz
 
   windows-release:
     runs-on: windows-latest
@@ -102,10 +102,10 @@ jobs:
           commit_sha=$(git rev-parse HEAD)
           cd packaging/mingw
           ./run.sh $commit_sha mrtrix3
-          mv mingw*.tar.zst ../../../mrtrix-windows.tar.zst
+          mv mingw*.tar.zst ../../../mrtrix-windows-${{ github.event.inputs.branch }}.tar.zst
 
       - name: Upload release artifact
         uses: actions/upload-artifact@v4
         with:
           name: mrtrix-windows-${{ github.event.inputs.branch }}
-          path: mrtrix-windows.tar.zst
+          path: mrtrix-windows-${{ github.event.inputs.branch }}.tar.zst
