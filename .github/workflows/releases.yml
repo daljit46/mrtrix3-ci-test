@@ -58,6 +58,7 @@ jobs:
           ./build ${{ github.event.inputs.branch }}
           ls
           mv ./mrtrix3-macos-${{ github.event.inputs.branch }}.tar.xz ../../
+          ls ../../
 
       - name: Upload release artifact
         uses: actions/upload-artifact@v4
