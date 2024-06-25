@@ -1,0 +1,103 @@
+name: Releases
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  linux-release:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: packaging_changes
+
+      - name: Install Qt 6
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: '6.7.0'
+          set-env: true
+
+      - name: Run build
+        run: |
+          ./packaging/package-linux-tarball.sh
+          mv mrtrix.tar.gz mrtrix-linux.tar.gz
+
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mrtrix-linux-${{ github.sha }}
+          path: mrtrix-linux.tar.gz
+
+  macos-release:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: packaging_changes
+
+      - name: Install deps
+        run: |
+          brew bundle --file=${{ github.workspace }}/.brewfile
+          brew install numpy cmake
+
+      - name: Run build
+        run: |
+          ./packaging/macos
+          ./build/dev
+          mv ./mrtrix3-macos-dev.tar.gz ../../mrtrix-macos.tar.gz
+
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mrtrix-macos-${{ github.sha }}
+          path: mrtrix-macos.tar.gz
+
+  windows-release:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+
+    env:
+      MINGW_PACKAGE_PREFIX: mingw-w64-ucrt-x86_64
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: packaging_changes
+
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          install: |
+            git
+            python
+            ${{env.MINGW_PACKAGE_PREFIX}}-bc
+            ${{env.MINGW_PACKAGE_PREFIX}}-cmake
+            ${{env.MINGW_PACKAGE_PREFIX}}-diffutils
+            ${{env.MINGW_PACKAGE_PREFIX}}-eigen3
+            ${{env.MINGW_PACKAGE_PREFIX}}-fftw
+            ${{env.MINGW_PACKAGE_PREFIX}}-gcc
+            ${{env.MINGW_PACKAGE_PREFIX}}-libtiff
+            ${{env.MINGW_PACKAGE_PREFIX}}-ninja
+            ${{env.MINGW_PACKAGE_PREFIX}}-pkg-config
+            ${{env.MINGW_PACKAGE_PREFIX}}-qt6-base
+            ${{env.MINGW_PACKAGE_PREFIX}}-qt6-svg
+            ${{env.MINGW_PACKAGE_PREFIX}}-zlib
+
+      - name: Run build
+        run: |
+          commit_sha=$(git rev-parse HEAD)
+          cd packaging/mingw
+          ./run.sh $commit_sha ${{ github.repository_owner }}
+          mv mingw*.tar.zst ../../mrtrix-windows.tar.zst
+
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mrtrix-windows-${{ github.sha }}
+          path: mrtrix-windows.tar.zst
