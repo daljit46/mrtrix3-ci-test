@@ -50,7 +50,7 @@ jobs:
           ref: packaging_changes
 
       - name: Install deps
-        run: brew install numpy cmake qt eigen pkg-config fftw libpng
+        run: brew install numpy cmake qt eigen pkg-config fftw libpng ninja
 
       - name: Run build
         run: |
