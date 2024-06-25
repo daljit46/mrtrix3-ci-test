@@ -55,8 +55,8 @@ jobs:
       - name: Run build
         run: |
           cd ./packaging/macos
-          ./build dev
-          mv ./mrtrix3-macos-dev.tar.xz ../../mrtrix-macos-${{ github.events.inputs.branch }}.tar.xz
+          ./build ${{ github.event.inputs.branch }}
+          mv ./mrtrix3-macos-${{ github.event.input.branch }}.tar.xz ../../
 
       - name: Upload release artifact
         uses: actions/upload-artifact@v4
