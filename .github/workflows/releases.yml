@@ -55,7 +55,7 @@ jobs:
         run: |
           cd ./packaging/macos
           ./build dev
-          mv ./mrtrix3-macos-dev.tar.gz ../../mrtrix-macos.tar.gz
+          mv ./mrtrix3-macos-dev.tar.xz ../../mrtrix-macos.tar.xz
 
       - name: Upload release artifact
         uses: actions/upload-artifact@v4
