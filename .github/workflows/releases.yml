@@ -7,7 +7,6 @@ on:
         description: 'Branch to release from'
         required: true
         default: 'master'
-  push:
 
 jobs:
   linux-release:
@@ -102,7 +101,7 @@ jobs:
           cd mrtrix3
           commit_sha=$(git rev-parse HEAD)
           cd packaging/mingw
-          ./run.sh packaging_changes mrtrix3
+          ./run.sh $commit_sha mrtrix3
           mv mingw*.tar.zst ../../mrtrix-windows.tar.zst
 
       - name: Upload release artifact
