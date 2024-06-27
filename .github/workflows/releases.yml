@@ -17,13 +17,14 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.inputs.branch }}
       
-      - name: Set commit sha and date
-        id: commit
+      - name: Set env vars
+        id: envs
         run: |
           commit_sha=$(git rev-parse HEAD)
           date=$(date +%Y_%m_%d)
           echo "commit_sha=$commit_sha" >> $GITHUB_ENV
           echo "date=$date" >> $GITHUB_ENV
+          echo "output_name: mrtrix3-linux-${commit_sha}-${date}.tar.gz" >> $GITHUB_ENV
 
       - name: Install Eigen3
         run: |
@@ -40,14 +41,13 @@ jobs:
       - name: Run build
         run: |
           ./packaging/package-linux-tarball.sh .
-          mv mrtrix.tar.gz mrtrix3-linux-${{ steps.commit.outputs.commit_sha }}-${{ steps.commit.outputs.date }}.tar.gz
-
+          mv mrtrix.tar.gz ${{ steps.envs.outputs.output_name }}
 
       - name: Upload release artifact
         uses: actions/upload-artifact@v4
         with:
-          name: mrtrix3-linux-${{ steps.commit.outputs.commit_sha }}-${{ steps.commit.outputs.date }}
-          path: mrtrix3-linux-*.tar.gz
+          name: ${{ steps.envs.outputs.output_name }}
+          path: ${{ steps.envs.outputs.output_name }}
 
   macos-release:
     runs-on: macos-latest
@@ -57,13 +57,14 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.inputs.branch }}
 
-      - name: Set commit sha and date
-        id: commit
+      - name: Set env vars
+        id: envs
         run: |
           commit_sha=$(git rev-parse HEAD)
           date=$(date +%Y_%m_%d)
           echo "commit_sha=$commit_sha" >> $GITHUB_ENV
           echo "date=$date" >> $GITHUB_ENV
+          echo "output_name: mrtrix3-macos-${commit_sha}-${date}.tar.xz" >> $GITHUB_ENV
 
       - name: Install deps
         run: brew install numpy cmake qt eigen pkg-config fftw libpng ninja
@@ -72,13 +73,13 @@ jobs:
         run: |
           cd ./packaging/macos
           ./build ${{ github.event.inputs.branch }}
-          mv ./mrtrix3-macos-${{ github.event.inputs.branch }}.tar.xz ../../mrtrix3-macos-${{ steps.commit.outputs.commit_sha }}-${{ steps.commit.outputs.date }}.tar.xz
+          mv ./mrtrix3-macos-${{ github.event.inputs.branch }}.tar.xz ../../${{ steps.envs.outputs.output_name }}
 
       - name: Upload release artifact
         uses: actions/upload-artifact@v4
         with:
-          name: mrtrix3-macos-${{ steps.commit.outputs.commit_sha }}-${{ steps.commit.outputs.date }}
-          path: mrtrix3-macos-*.tar.xz
+          name: ${{ steps.envs.outputs.output_name }}
+          path: ${{ steps.envs.outputs.output_name }}
 
   windows-release:
     runs-on: windows-latest
@@ -112,24 +113,25 @@ jobs:
       - name: Checkout
         run: git clone https://github.com/mrtrix3/mrtrix3 -b ${{ github.event.inputs.branch }}
       
-      - name: Set commit sha and date
-        id: commit
+      - name: Set env vars
+        id: envs
         run: |
           cd mrtrix3
           commit_sha=$(git rev-parse HEAD)
           date=$(date +%Y_%m_%d)
           echo "commit_sha=$commit_sha" >> $GITHUB_ENV
           echo "date=$date" >> $GITHUB_ENV
+          echo "output_name: mrtrix3-windows-${commit_sha}-${date}.tar.zst" >> $GITHUB_ENV
 
       - name: Run build
         run: |
           cd mrtrix3
           cd packaging/mingw
           ./run.sh ${{ env.commit_sha }} mrtrix3
-          mv mingw*.tar.zst ../../../mrtrix3-windows-${{ env.commit_sha }}-${{ env.date }}.tar.zst
+          mv mingw*.tar.zst ../../../${{env.output_name }}
 
       - name: Upload release artifact
         uses: actions/upload-artifact@v4
         with:
-          name: mrtrix3-windows-${{ steps.commit.outputs.commit_sha }}-${{ steps.commit.outputs.date }}
-          path: mrtrix3-windows-*.tar.zst
+          name: ${{ steps.envs.outputs.output_name }}
+          path: ${{ steps.envs.outputs.output_name }}
