@@ -24,7 +24,7 @@ jobs:
           date=$(date +%Y_%m_%d)
           echo "commit_sha=$commit_sha" >> $GITHUB_OUTPUT
           echo "date=$date" >> $GITHUB_OUTPUT
-          echo "output_name: mrtrix3-linux-$commit_sha-$date.tar.gz" >> $GITHUB_OUTPUT
+          echo "output_name=mrtrix3-linux-$commit_sha-$date.tar.gz" >> $GITHUB_OUTPUT
 
       - name: Install Eigen3
         run: |
