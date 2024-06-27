@@ -6,7 +6,7 @@ on:
       branch:
         description: 'Branch to release from'
         required: true
-        default: 'master'
+        default: 'dev'
 
 jobs:
   linux-release:
@@ -21,14 +21,13 @@ jobs:
         id: commit
         run: |
           commit_sha=$(git rev-parse HEAD)
-          date=$(date +%Y%m%d)
+          date=$(date +%Y-%m-%d)
           echo "commit_sha=$commit_sha" >> $GITHUB_ENV
           echo "date=$date" >> $GITHUB_ENV
 
       - name: Install Eigen3
         run: |
-          git clone https://gitlab.com/libeigen/eigen.git
-          cd eigen && git checkout 3.4.0
+          git clone https://gitlab.com/libeigen/eigen.git && cd eigen && git checkout 3.4.0
           cmake -B build && cmake --build build
           sudo cmake --install build
 
@@ -62,7 +61,7 @@ jobs:
         id: commit
         run: |
           commit_sha=$(git rev-parse HEAD)
-          date=$(date +%Y%m%d)
+          date=$(date +%Y-%m-%d)
           echo "commit_sha=$commit_sha" >> $GITHUB_ENV
           echo "date=$date" >> $GITHUB_ENV
 
@@ -118,7 +117,7 @@ jobs:
         run: |
           cd mrtrix3
           commit_sha=$(git rev-parse HEAD)
-          date=$(date +%Y%m%d)
+          date=$(date +%Y-%m-%d)
           echo "commit_sha=$commit_sha" >> $GITHUB_ENV
           echo "date=$date" >> $GITHUB_ENV
 
