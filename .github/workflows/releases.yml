@@ -26,6 +26,12 @@ jobs:
           echo "date=$date" >> $GITHUB_ENV
           echo "output_name=mrtrix3-linux-$commit_sha-$date.tar.gz" >> $GITHUB_ENV
 
+      - name: Print envs
+        run: |
+          echo $commit_sha
+          echo $date
+          echo $output_name
+          
       - name: Install Eigen3
         run: |
           git clone https://gitlab.com/libeigen/eigen.git && cd eigen && git checkout 3.4.0
