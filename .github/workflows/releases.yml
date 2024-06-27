@@ -24,8 +24,8 @@ jobs:
           date=$(date +%Y_%m_%d)
           echo "commit_sha=$commit_sha" >> $GITHUB_ENV
           echo "date=$date" >> $GITHUB_ENV
-          echo "output_name: mrtrix3-linux-${commit_sha}-${date}.tar.gz" >> $GITHUB_ENV
-
+          echo "output_name=mrtrix3-linux-$commit_sha-$date.tar.gz" >> $GITHUB_ENV
+          
       - name: Install Eigen3
         run: |
           git clone https://gitlab.com/libeigen/eigen.git && cd eigen && git checkout 3.4.0
@@ -64,7 +64,7 @@ jobs:
           date=$(date +%Y_%m_%d)
           echo "commit_sha=$commit_sha" >> $GITHUB_ENV
           echo "date=$date" >> $GITHUB_ENV
-          echo "output_name: mrtrix3-macos-${commit_sha}-${date}.tar.xz" >> $GITHUB_ENV
+          echo "output_name=mrtrix3-macos-$commit_sha-$date.tar.xz" >> $GITHUB_ENV
 
       - name: Install deps
         run: brew install numpy cmake qt eigen pkg-config fftw libpng ninja
@@ -121,7 +121,7 @@ jobs:
           date=$(date +%Y_%m_%d)
           echo "commit_sha=$commit_sha" >> $GITHUB_ENV
           echo "date=$date" >> $GITHUB_ENV
-          echo "output_name: mrtrix3-windows-${commit_sha}-${date}.tar.zst" >> $GITHUB_ENV
+          echo "output_name=mrtrix3-windows-$commit_sha-$date.tar.zst" >> $GITHUB_ENV
 
       - name: Run build
         run: |
