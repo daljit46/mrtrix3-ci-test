@@ -125,8 +125,8 @@ jobs:
         run: |
           cd mrtrix3
           cd packaging/mingw
-          ./run.sh ${{ steps.commit.outputs.commit_sha }} mrtrix3
-          mv mingw*.tar.zst ../../../mrtrix3-windows-${{ steps.commit.outputs.commit_sha }}-${{ steps.commit.outputs.date }}.tar.zst
+          ./run.sh ${{ env.commit_sha }} mrtrix3
+          mv mingw*.tar.zst ../../../mrtrix3-windows-${{ env.commit_sha }}-${{ env.date }}.tar.zst
 
       - name: Upload release artifact
         uses: actions/upload-artifact@v4
