@@ -31,7 +31,8 @@ jobs:
           echo $commit_sha
           echo $date
           echo $output_name
-          
+          echo ${{ steps.envs.outputs.output_name }}
+
       - name: Install Eigen3
         run: |
           git clone https://gitlab.com/libeigen/eigen.git && cd eigen && git checkout 3.4.0
@@ -47,8 +48,7 @@ jobs:
       - name: Run build
         run: |
           ./packaging/package-linux-tarball.sh .
-          echo ${{ steps.envs.outputs.output_name }}
-          mv mrtrix.tar.gz ./${{ steps.envs.outputs.output_name }}
+          mv mrtrix.tar.gz ./$output_name
 
       - name: Upload release artifact
         uses: actions/upload-artifact@v4
