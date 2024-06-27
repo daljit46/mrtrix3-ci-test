@@ -127,7 +127,7 @@ jobs:
         run: |
           cd mrtrix3
           cd packaging/mingw
-          ./run.sh ${{ steps.envs.outputs.output_name }} mrtrix3
+          ./run.sh ${{ github.event.inputs.branch }} mrtrix3
           mv mingw*.tar.zst ../../../${{ steps.envs.outputs.output_name }}
 
       - name: Upload release artifact
