@@ -22,8 +22,8 @@ jobs:
         run: |
           commit_sha=$(git rev-parse HEAD)
           date=$(date +%Y%m%d)
-          echo "::set-output name=commit_sha::$commit_sha"
-          echo "::set-output name=date::$date"
+          echo "commit_sha=$commit_sha" >> $GITHUB_ENV
+          echo "date=$date" >> $GITHUB_ENV
 
       - name: Install Eigen3
         run: |
@@ -63,8 +63,8 @@ jobs:
         run: |
           commit_sha=$(git rev-parse HEAD)
           date=$(date +%Y%m%d)
-          echo "::set-output name=commit_sha::$commit_sha"
-          echo "::set-output name=date::$date"
+          echo "commit_sha=$commit_sha" >> $GITHUB_ENV
+          echo "date=$date" >> $GITHUB_ENV
 
       - name: Install deps
         run: brew install numpy cmake qt eigen pkg-config fftw libpng ninja
@@ -119,8 +119,8 @@ jobs:
           cd mrtrix3
           commit_sha=$(git rev-parse HEAD)
           date=$(date +%Y%m%d)
-          echo "::set-output name=commit_sha::$commit_sha"
-          echo "::set-output name=date::$date"
+          echo "commit_sha=$commit_sha" >> $GITHUB_ENV
+          echo "date=$date" >> $GITHUB_ENV
 
       - name: Run build
         run: |
