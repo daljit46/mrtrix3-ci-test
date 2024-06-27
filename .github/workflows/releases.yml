@@ -41,6 +41,7 @@ jobs:
       - name: Run build
         run: |
           ./packaging/package-linux-tarball.sh .
+          echo ${{ steps.envs.outputs.output_name }}
           mv mrtrix.tar.gz ./${{ steps.envs.outputs.output_name }}
 
       - name: Upload release artifact
