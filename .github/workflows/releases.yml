@@ -40,14 +40,14 @@ jobs:
       - name: Run build
         run: |
           ./packaging/package-linux-tarball.sh .
-          mv mrtrix.tar.gz mrtrix-linux-${{ steps.commit.outputs.commit_sha }}-${{ steps.commit.outputs.date }}.tar.gz
+          mv mrtrix.tar.gz mrtrix3-linux-${{ steps.commit.outputs.commit_sha }}-${{ steps.commit.outputs.date }}.tar.gz
 
 
       - name: Upload release artifact
         uses: actions/upload-artifact@v4
         with:
-          name: mrtrix-linux-${{ steps.commit.outputs.commit_sha }}-${{ steps.commit.outputs.date }}
-          path: mrtrix-linux-*.tar.gz
+          name: mrtrix3-linux-${{ steps.commit.outputs.commit_sha }}-${{ steps.commit.outputs.date }}
+          path: mrtrix3-linux-*.tar.gz
 
   macos-release:
     runs-on: macos-latest
@@ -77,8 +77,8 @@ jobs:
       - name: Upload release artifact
         uses: actions/upload-artifact@v4
         with:
-          name: mrtrix-macos-${{ steps.commit.outputs.commit_sha }}-${{ steps.commit.outputs.date }}
-          path: mrtrix-macos-*.tar.xz
+          name: mrtrix3-macos-${{ steps.commit.outputs.commit_sha }}-${{ steps.commit.outputs.date }}
+          path: mrtrix3-macos-*.tar.xz
 
   windows-release:
     runs-on: windows-latest
@@ -126,10 +126,10 @@ jobs:
           cd mrtrix3
           cd packaging/mingw
           ./run.sh ${{ steps.commit.outputs.commit_sha }} mrtrix3
-          mv mingw*.tar.zst ../../../mrtrix-windows-${{ steps.commit.outputs.commit_sha }}-${{ steps.commit.outputs.date }}.tar.zst
+          mv mingw*.tar.zst ../../../mrtrix3-windows-${{ steps.commit.outputs.commit_sha }}-${{ steps.commit.outputs.date }}.tar.zst
 
       - name: Upload release artifact
         uses: actions/upload-artifact@v4
         with:
-          name: mrtrix-windows-${{ steps.commit.outputs.commit_sha }}-${{ steps.commit.outputs.date }}
-          path: mrtrix-windows-*.tar.zst
+          name: mrtrix3-windows-${{ steps.commit.outputs.commit_sha }}-${{ steps.commit.outputs.date }}
+          path: mrtrix3-windows-*.tar.zst
